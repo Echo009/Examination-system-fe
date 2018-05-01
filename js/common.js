@@ -81,7 +81,14 @@ $(function () {
         var $this = $(this);
         $("#searchOption").text($this.text());
     });
-
+    $(document).on("click",".personal-center-nav",function () {
+        var $this = $(this);
+        var href = $this.attr("data-target-href");
+        if(href == undefined){
+            return;
+        }
+        window.location.href = href;
+    });
     $("[data-toggle='tooltip']").tooltip();
     // todo modify
     $("#search-btn").on("click", function () {

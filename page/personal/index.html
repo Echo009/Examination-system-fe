@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--
+* Author : Ech0
+* Email  : ech0.extreme@foxmail.com
+* Time   : 05/01/2018 04:28 PM
+*-->
+    <meta charset="UTF-8">
+    <title>个人中心</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--lib-->
+    <script src="../../lib/jquery/jquery.js"></script>
+    <link rel="stylesheet" href="../../lib/bootstrap/bootstrap.css">
+    <script src="../../lib/bootstrap/popper.js"></script>
+    <script src="../../lib/bootstrap/bootstrap.js"></script>
+    <script src="../../lib/echarts/echarts.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css"
+          integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+    <!--sweetalert-->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.bootcss.com/store.js/1.3.20/store.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.18.0/axios.js"></script>
+    <script src="../../js/constant.js"></script>
+    <script src="../../js/common.js"></script>
+    <!--todo modify-->
+    <link rel="stylesheet" href="../../css/custom.css">
+
+</head>
+<body>
+<div class="container">
+    <div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary ">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">EETU-Exam</a>
+            <!--菜单按钮-->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                    aria-controls="" navbarResponsive aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!--菜单-->
+            <div class="collapse navbar-collapse text-center" id="navbarResponsive">
+                <ul class="navbar-nav mr-auto">
+                    <!--分类下拉框-->
+                    <li class="nav-item dropdown ">
+                        <div class="nav-link dropdown-toggle btn btn-primary" data-toggle="dropdown"><span
+                                id="searchOption" class="pl-2">所有题库</span> <span class="caret"></span></div>
+                        <div class="dropdown-menu ">
+                            <!--fixed category -->
+                            <div class="search-option dropdown-item"><i class="fas fa-terminal"></i>编程语言</div>
+                            <div class="search-option dropdown-item"><i class="fas fa-chart-bar"></i></i>算法</div>
+                            <div class="search-option dropdown-item"><i class="fab fa-stumbleupon-circle"></i>数据结构</div>
+                            <div class="search-option dropdown-item"><i class="fab fa-app-store"></i>数学和逻辑</div>
+
+                            <div class="search-option dropdown-item"><i class="fab fa-connectdevelop"></i>计算机基础</div>
+                            <div class="search-option dropdown-item"><i class="fas fa-code"></i>软件开发</div>
+                            <hr>
+                            <div class="search-option dropdown-item"><i class="fas fa-random"></i>所有题库</div>
+                        </div>
+                    </li>
+                    <li class="nav-item ml-3 ">
+                        <!--搜索框-->
+                        <form class="form-inline mt-2 mt-md-0 ">
+                            <input id="search-keyword" class="form-control mr-sm-2" type="text" placeholder="">
+                        </form>
+                    </li>
+                    <li class="nav-item ml-3 ">
+                        <div class="search-btn btn btn-secondary btn-block  my-2 my-sm-0"><i
+                                class="h5  mr-1 fas fa-search-plus"></i></div>
+                    </li>
+                </ul>
+                <!--右侧个人选项-->
+                <div class="nav navbar-nav float-right ">
+                    <div class="nav-item mr-3">
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <div class="btn-group" role="group">
+                                <button id="btnGroupDrop2" type="button" class="btn btn-primary dropdown-toggle"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img id="nav-head-img" class="rounded"
+                                         src="http://p7vng16qv.bkt.clouddn.com/04035c2b-5c7b-49dc-8b2e-8f818f78ae29"
+                                         style="max-width: 2.4rem">
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="btnGroupDrop2">
+                                    <a class="dropdown-item" href="#"><i class="fas fa-heart"></i>题目收藏</a>
+                                    <a class="dropdown-item" href="#"><i class="fas fa-book"></i>刷题记录</a>
+                                    <a class="dropdown-item" href="#"><i class="fas fa-terminal"></i>我的简历</a>
+                                    <a class="dropdown-header" onclick="logout()"> <i
+                                            class=" pl-2 h5 fas fa-sign-out-alt"></i>退出</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content mt-3">
+        <div id="personal-info-panel" class="panel  w-100 border border-secondary  rounded mt-2">
+            <!--base-info-->
+            <div class="row border border-primary rounded">
+                <!--头像-->
+                <div class="col-4 col-lg-1 pl-1 mt-2 pr-1   ">
+                    <img id="personal-info-head-img"
+                         class="head-img-l img-thumbnail rounded-circle  border border-primary"
+                         src="http://p7f7rr200.bkt.clouddn.com/b6463e9a-e8e2-44a6-909b-332887e5d995">
+                </div>
+                <!--简要信息-->
+                <div class="col-6 col-lg-8 mt-2 rounded">
+                    <!--username-->
+                    <div id="personal-info-username" class="d-inline-block font-weight-bold badge  badge-success">
+                        Echo009
+                    </div>
+                    <div id="personal-info-school" class=" badge badge-pill badge-danger "><i
+                            class="fas fa-graduation-cap"></i> 湖南科技大学
+                    </div>
+                    <div></div>
+                    <!--phone-->
+                    <div id="personal-info-phone" class="h6 d-inline-block pr-2 mt-2 text-danger">17673207341</div>
+                    <!--sex-->
+                    <div id="personal-info-sex" class=" badge badge-pill badge-info "> ♂</div>
+                    <div></div>
+                    <!--email-->
+                    <div id="personal-info-email" class="text-muted text-info mt-1"></div>
+                    <!--addr-->
+                    <div id="personal-info-addr" class="mt-1 h6 font-weight-bold">
+                        <i class="fas fa-map-marker mr-2 text-dark"></i> 湖南 <span class="text-muted  "> 省</span> 湘潭<span
+                            class="text-muted  "> 市</span>
+                    </div>
+                </div>
+                <!--修改按钮-->
+                <div class="col-2 col-lg-1 mt-2 pl-4 offset-lg-2   rounded text-right  ">
+                    <div class=" mr-4" data-toggle="tooltip" data-placement="top"
+                         title="" data-original-title="修改个人信息">
+                        <i class="h5 fas fa-pencil-alt mr-0" style="cursor: pointer"></i>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="row">
+            <!--左侧导航-->
+            <div id="nav-group" class="col-md-3 col-12 mt-1 border border-secondary rounded p-0">
+                <div class="btn-group-vertical btn-group-toggle w-100 pt-1" data-toggle="buttons">
+                    <label class="personal-center-nav btn btn-outline-primary rounded  pb-2 pt-2 mb-1 active "
+                           data-target-href="./index.html">
+                        <input type="radio" name="options" autocomplete="off" checked="checked">
+                        <i class="fas fa-home "></i>我的首页
+                    </label>
+                    <label class="personal-center-nav btn btn-outline-primary  rounded pb-2 pt-2 mb-1">
+                        <input type="radio" name="options" autocomplete="off">
+                        <i class="fab fa-codiepie"></i>去刷题~
+                    </label>
+                    <label class="personal-center-nav btn btn-outline-primary  rounded pb-2 pt-2 mb-1">
+                        <input type="radio" name="options" autocomplete="off">
+                        <i class="fas fa-heart"></i>我的收藏
+                    </label>
+                    <label class="personal-center-nav btn btn-outline-primary  rounded pb-2 pt-2 mb-1">
+                        <input type="radio" name="options" autocomplete="off">
+                        <i class="fas fa-exclamation-circle"></i>错题浏览
+                    </label>
+                    <label class="personal-center-nav btn btn-outline-primary  rounded pb-2 pt-2 mb-1">
+                        <input type="radio" name="options" autocomplete="off">
+                        <i class="fas fa-location-arrow"></i>发帖&讨论
+                    </label>
+                    <label class="personal-center-nav btn btn-outline-primary  rounded pb-2 pt-2 mb-1">
+                        <input type="radio" name="options" autocomplete="off">
+                        <i class="fas fa-plus-square "></i>添加题目
+                    </label>
+                    <label class="personal-center-nav btn btn-outline-primary  rounded pb-2 pt-2 mb-1 ">
+                        <input type="radio" name="options" autocomplete="off">
+                        <i class="fab fa-empire"></i>模拟笔试
+                    </label>
+                    <label class="personal-center-nav btn btn-outline-primary  rounded pb-2 pt-2 mb-1 ">
+                        <input type="radio" name="options" autocomplete="off">
+                        <i class="fas fa-address-card"></i>我的简历
+                    </label>
+                    <label class="personal-center-nav btn btn-outline-primary  rounded pb-2 pt-2 mb-1">
+                        <input type="radio" name="options" autocomplete="off">
+                        <i class="fas fa-user-secret"></i>基本资料
+                    </label>
+                </div>
+            </div>
+            <!--主面板-->
+            <div class="col-md-9 col-12 border border-secondary rounded">
+                <div class="row">
+                    <!--基础统计信息-->
+                    <div class="col-12 ">
+                        <div class="text-left pl-2 font-weight-bold h5 pt-3"><i class="h3 fas fa-chart-line"></i> 成就
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="col-12   mt-2 text-center ">
+                        <span class="pr-5"><i class="h4 fas fa-pen-square "></i>已练习 <span
+                                class="badge badge-dark badge-pill mr-2">199</span>道题</span>
+                        <div class="d-lg-none"></div>
+
+                        <span class="pr-5"><i class="h4 fas fa-check"></i> 答对 <span
+                                class="badge badge-dark badge-pill mr-2"> 166  </span> 道题</span>
+
+                        <div class="d-lg-none"></div>
+                        <span class="pr-5"><i class="h4 fas fa-dna"></i>练习了 <span
+                                class="badge badge-dark badge-pill mr-2"> 1  </span> 套试卷</span>
+                        <hr>
+                        <span class="pr-5"><i class="h4 far fa-plus-square"></i> 提供了 <span
+                                class="badge badge-dark badge-pill mr-2">10</span>道题</span>
+                        <div class="d-lg-none"></div>
+                        <span class="pr-5"><i class="h4 fas fa-file-alt"></i> 创建了 <span
+                                class="badge badge-dark badge-pill mr-2">10</span>套试卷</span>
+                    </div>
+
+                    <div class="col-12 pl-2 d-md-block d-none">
+                        <hr>
+                        <div class="text-left pl-2 font-weight-bold h5 pt-3"><i class="fas fa-circle-notch"></i> 我的技能
+                        </div>
+                        <div id="skill-radar" class="w-100 " style="height: 25rem">
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+    <div class="mt-5 mb-3 text-muted text-center">
+        &copy; 2018 <span class="h5 text-danger font-weight-bold">EETU</span> Examination System &nbsp;
+        <div>Power by <a class="text-success" href="http://echo0.cn "> eetn.echo0.cn </a></div>
+    </div>
+</div>
+</body>
+
+<script>
+
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('skill-radar'));
+
+    // 指定图表的配置项和数据
+    var option = {
+        tooltip: {},
+        radar: {
+            shape: 'circle',
+            name: {
+                textStyle: {
+                    color: '#ffe',
+                    backgroundColor: '#333333',
+                    borderRadius: 4,
+                    padding: [5, 5]
+                }
+            },
+            indicator: [
+                {name: '编程语言（Program Language）', max: 100},
+                {name: '算法（Algorithm）', max: 100},
+                {name: '数据结构（Data Structure）', max: 100},
+                {name: '数学和逻辑（Math Logic）', max: 100},
+                {name: '计算机基础（Computer Base）', max: 100},
+                {name: '软件开发（Soft Development）', max: 100}
+            ]
+        },
+        series: [{
+            name: 'Ability',
+            type: 'radar',
+            data: [
+                {
+                    value: [99, 60, 77, 99, 99, 99],
+                    name: 'abliity'
+                }
+            ]
+        }]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+    $(function () {
+
+    });
+
+</script>
+</html>

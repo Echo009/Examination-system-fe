@@ -41,6 +41,24 @@ var response1 = {
     }
 }
 
-
+/**
+ *
+ */
 var choices = JSON.parse(response1.data.choices);
 var correctChoice = JSON.parse(response1.data.answer);
+/**
+ *  选择题答案示例数据
+ * @type {{questionId: number, answer: string}}
+ */
+var answerOfChoice = {
+    questionId: 1,
+    answer: "[\"a\"]"
+};
+
+
+var answerArr = new Array();
+answerArr.push(answerOfChoice);
+answerArr.push(answerOfChoice);
+answerArr.push(answerOfChoice);
+
+JSON.stringify(answerArr);
