@@ -29,3 +29,10 @@ if(typeof QUESTION_TYPE == "undefined"){
     QUESTION_TYPE.ASK = 3;
     QUESTION_TYPE.CODE = 4;
 }
+/**
+ * 状态码常量
+ */
+if(typeof RESPONSE_CODE == "undefined"){
+    var RESPONSE_CODE = {};
+    RESPONSE_CODE.NO_LOGIN = 121;
+}

@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--
+* Author : Ech0
+* Email  : ech0.extreme@foxmail.com
+* Time   : 05/01/2018 04:28 PM
+*-->
+    <meta charset="UTF-8">
+    <title>添加题目</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--lib-->
+    <script src="../../lib/jquery/jquery.js"></script>
+    <link rel="stylesheet" href="../../lib/bootstrap/bootstrap.css">
+    <script src="../../lib/bootstrap/popper.js"></script>
+    <script src="../../lib/bootstrap/bootstrap.js"></script>
+    <script src="../../lib/echarts/echarts.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css"
+          integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+    <!--sweetalert-->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.bootcss.com/store.js/1.3.20/store.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.18.0/axios.js"></script>
+    <!--icheck-->
+    <script src="https://cdn.bootcss.com/iCheck/1.0.2/icheck.js"></script>
+    <link href="https://cdn.bootcss.com/iCheck/1.0.2/skins/all.css" rel="stylesheet">
+    <!--file-input-->
+    <link rel="stylesheet" href="../../lib/fileinput/fileinput.css">
+    <link rel="stylesheet" href="../../lib/fileinput/theme.css">
+    <script src="../../lib/fileinput/piexif.js"></script>
+    <script src="../../lib/fileinput/fileinput.js"></script>
+    <script src="../../lib/fileinput/zh.js"></script>
+    <script src="../../lib/fileinput/theme.js"></script>
+
+    <script src="../../js/constant.js"></script>
+    <script src="../../js/common.js"></script>
+
+    <!--todo modify-->
+    <link rel="stylesheet" href="../../css/custom.css">
+
+</head>
+<body>
+<div class="container">
+    <div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary ">
+        <div class="container">
+            <a href="../page/index.html" class="navbar-brand">EETU-Exam</a>
+            <!--菜单按钮-->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                    aria-controls="" navbarResponsive aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!--菜单-->
+            <div class="collapse navbar-collapse text-center" id="navbarResponsive">
+                <ul class="navbar-nav mr-auto">
+                    <!--分类下拉框-->
+                    <li class="nav-item dropdown ">
+                        <div class="nav-link dropdown-toggle btn btn-primary" data-toggle="dropdown"><span
+                                id="searchOption" class="pl-2">所有题库</span> <span class="caret"></span></div>
+                        <div class="dropdown-menu ">
+                            <!--fixed category -->
+                            <div class="search-option dropdown-item"><i class="fas fa-terminal"></i>编程语言</div>
+                            <div class="search-option dropdown-item"><i class="fas fa-chart-bar"></i></i>算法</div>
+                            <div class="search-option dropdown-item"><i class="fab fa-stumbleupon-circle"></i>数据结构</div>
+                            <div class="search-option dropdown-item"><i class="fab fa-app-store"></i>数学和逻辑</div>
+
+                            <div class="search-option dropdown-item"><i class="fab fa-connectdevelop"></i>计算机基础</div>
+                            <div class="search-option dropdown-item"><i class="fas fa-code"></i>软件开发</div>
+                            <hr>
+                            <div class="search-option dropdown-item"><i class="fas fa-random"></i>所有题库</div>
+                        </div>
+                    </li>
+                    <li class="nav-item ml-3 ">
+                        <!--搜索框-->
+                        <form class="form-inline mt-2 mt-md-0 ">
+                            <input id="search-keyword" class="form-control mr-sm-2" type="text" placeholder="">
+                        </form>
+                    </li>
+                    <li class="nav-item ml-3 ">
+                        <div class="search-btn btn btn-secondary btn-block  my-2 my-sm-0"><i
+                                class="h5  mr-1 fas fa-search-plus"></i></div>
+                    </li>
+                </ul>
+                <!--右侧个人选项-->
+                <div class="nav navbar-nav float-right ">
+                    <div class="nav-item mr-3">
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <div class="btn-group" role="group">
+                                <button id="btnGroupDrop2" type="button" class="btn btn-primary dropdown-toggle"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img id="nav-head-img" class="rounded"
+                                         src="http://p7vng16qv.bkt.clouddn.com/04035c2b-5c7b-49dc-8b2e-8f818f78ae29"
+                                         style="max-width: 2.4rem">
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="btnGroupDrop2">
+                                    <a class="dropdown-item" href="#"><i class="fas fa-heart"></i>题目收藏</a>
+                                    <a class="dropdown-item" href="#"><i class="fas fa-book"></i>刷题记录</a>
+                                    <a class="dropdown-item" href="#"><i class="fas fa-terminal"></i>我的简历</a>
+                                    <a class="dropdown-header" onclick="logout()"> <i
+                                            class=" pl-2 h5 fas fa-sign-out-alt"></i>退出</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content mt-3">
+        <div id="personal-info-panel" class="panel  w-100 border border-secondary  rounded mt-2">
+            <!--base-info-->
+            <div class="row border border-primary rounded">
+                <!--头像-->
+                <div class="col-4 col-lg-1 pl-1 mt-2 pr-1   ">
+                    <img id="personal-info-head-img"
+                         class="head-img-l img-thumbnail rounded-circle  border border-primary"
+                         src="http://p7f7rr200.bkt.clouddn.com/b6463e9a-e8e2-44a6-909b-332887e5d995">
+                </div>
+                <!--简要信息-->
+                <div class="col-6 col-lg-8 mt-2 rounded">
+                    <!--username-->
+                    <div id="personal-info-username" class="d-inline-block font-weight-bold badge  badge-success">
+                        Echo009
+                    </div>
+                    <div id="personal-info-school" class=" badge badge-pill badge-danger "><i
+                            class="fas fa-graduation-cap"></i> 湖南科技大学
+                    </div>
+                    <div></div>
+                    <!--phone-->
+                    <div id="personal-info-phone" class="h6 d-inline-block pr-2 mt-2 text-danger">17673207341</div>
+                    <!--sex-->
+                    <div id="personal-info-sex" class=" badge badge-pill badge-info "> ♂</div>
+                    <div></div>
+                    <!--email-->
+                    <div id="personal-info-email" class="text-muted text-info mt-1"></div>
+                    <!--addr-->
+                    <div id="personal-info-addr" class="mt-1 h6 font-weight-bold">
+                        <i class="fas fa-map-marker mr-2 text-dark"></i> 湖南 <span class="text-muted  "> 省</span> 湘潭<span
+                            class="text-muted  "> 市</span>
+                    </div>
+                </div>
+                <!--修改按钮-->
+                <div class="col-2 col-lg-1 mt-2 pl-4 offset-lg-2   rounded text-right  ">
+                    <div class=" mr-4" data-toggle="tooltip" data-placement="top"
+                         title="" data-original-title="修改个人信息">
+                        <i class="h5 fas fa-pencil-alt mr-0" style="cursor: pointer"></i>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="row">
+            <!--左侧导航-->
+            <div id="nav-group" class="col-md-3 col-12 mt-1 p-0">
+                <div class="btn-group-vertical btn-group-toggle w-100 pt-3 pb-3 border border-secondary rounded "
+                     data-toggle="buttons">
+                    <label class="personal-center-nav btn btn-outline-primary rounded  pb-2 pt-2 mb-1  "
+                           data-target-href="./index.html">
+                        <input type="radio" name="options" autocomplete="off" checked="checked">
+                        <i class="fas fa-home "></i>我的首页
+                    </label>
+                    <label class="personal-center-nav btn btn-outline-primary  rounded pb-2 pt-2 mb-1">
+                        <input type="radio" name="options" autocomplete="off">
+                        <i class="fab fa-codiepie"></i>去刷题~
+                    </label>
+                    <label class="personal-center-nav btn btn-outline-primary  rounded pb-2 pt-2 mb-1">
+                        <input type="radio" name="options" autocomplete="off">
+                        <i class="fas fa-heart"></i>我的收藏
+                    </label>
+                    <label class="personal-center-nav btn btn-outline-primary  rounded pb-2 pt-2 mb-1">
+                        <input type="radio" name="options" autocomplete="off">
+                        <i class="fas fa-exclamation-circle"></i>错题浏览
+                    </label>
+                    <label class="personal-center-nav btn btn-outline-primary  rounded pb-2 pt-2 mb-1">
+                        <input type="radio" name="options" autocomplete="off">
+                        <i class="fas fa-location-arrow"></i>发帖&讨论
+                    </label>
+                    <label class="personal-center-nav btn btn-outline-primary  rounded pb-2 pt-2 mb-1 active"
+                           data-target-href="./add-question.html">
+                        <input type="radio" name="options" autocomplete="off">
+                        <i class="fas fa-plus-square "></i>添加题目
+                    </label>
+                    <label class="personal-center-nav btn btn-outline-primary  rounded pb-2 pt-2 mb-1 "
+                           data-target-href="">
+                        <input type="radio" name="options" autocomplete="off">
+                        <i class="fab fa-monero"></i>我的题目
+                    </label>
+                    <label class="personal-center-nav btn btn-outline-primary  rounded pb-2 pt-2 mb-1 ">
+                        <input type="radio" name="options" autocomplete="off">
+                        <i class="fab fa-empire"></i>模拟笔试
+                    </label>
+                    <label class="personal-center-nav btn btn-outline-primary  rounded pb-2 pt-2 mb-1 ">
+                        <input type="radio" name="options" autocomplete="off">
+                        <i class="fas fa-address-card"></i>我的简历
+                    </label>
+                    <label class="personal-center-nav btn btn-outline-primary  rounded pb-2 pt-2 mb-1">
+                        <input type="radio" name="options" autocomplete="off">
+                        <i class="fas fa-user-secret"></i>基本资料
+                    </label>
+                </div>
+            </div>
+            <!--主面板-->
+            <div class="col-md-9 col-12 border border-secondary rounded">
+                <div class="row">
+                    <!--添加题目-->
+                    <div class="col-12 ">
+                        <div class="text-left pl-2 font-weight-bold h5 pt-3"><i class="h3 fab fa-autoprefixer"></i> 添加题目
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="col-12 pl-4">
+                        <div class="row">
+                            <div class="col-12 ">
+                                <input type="hidden" id="type" value="0">
+                                <label><i class="fas fa-certificate"></i>请选择题目类型 ：</label>
+                                <div class="pl-4 pt-2" id="question-type">
+                                    <input type="radio" id="radio-single" name="iCheck"
+                                           class="mr-3 iCheck-question-type" checked value="0">
+                                    <label for="radio-single" class="">单选</label>
+                                    <input type="radio" id="radio-multi" name="iCheck" class="mr-3 iCheck-question-type"
+                                           value="1">
+                                    <label for="radio-multi" class="">多选</label>
+                                    <input type="radio" id="radio-gap_fill" name="iCheck"
+                                           class="mr-3 iCheck-question-type" value="2">
+                                    <label for="radio-gap_fill" class="">填空</label>
+                                    <input type="radio" id="radio-ask" name="iCheck" class="mr-3 iCheck-question-type"
+                                           value="3">
+                                    <label for="radio-ask">问答</label>
+                                    <input type="radio" id="radio-code" name="iCheck" class="mr-3 iCheck-question-type"
+                                           value="4">
+                                    <label for="radio-code">编程</label>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div id="common-title-panel" class="question-input-panel col-md-6 col-12 pt-2">
+                                <label class="form-control-label" for="title">请输入题目:</label>
+                                <div class="pl-4 pt-2 form-group  mb-2">
+                                    <!-- is-valid   is-invalid -->
+                                    <input type="text" class="form-control " id="title" onkeyup="">
+                                    <div class="valid-feedback">emmmmm ...</div>
+                                    <div class="invalid-feedback">请输入题目！</div>
+                                </div>
+                            </div>
+                            <div class=" col-md-6 col-12 pt-2">
+                                <label class="form-control-label" for="category">请选择题目所属分类：</label>
+                                <div class="pl-4 form-group  mb-2 pt-2">
+                                    <select id="category"
+                                            class="w-50 custom-select border rounded border-primary font-weight-bold">
+                                        <option selected="" value="0">编程语言</option>
+                                        <option value="1">算法</option>
+                                        <option value="2">数据结构</option>
+                                        <option value="3">数学和逻辑</option>
+                                        <option value="4">计算机基础</option>
+                                        <option value="5">软件开发</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!--选择题-->
+                            <div id="choice-form" class="question-input-panel  w-100">
+                                <div class="col-12 pt-2">
+                                    <label class="form-control-label" for="choices">请录入选项,并勾选正确答案：</label>
+                                    <div id="choices">
+                                        <!--a-->
+                                        <div class="pl-4 form-group  mb-2 pt-2 w-100">
+                                            <span class="mr-2 font-weight-bold badge badge-pill badge-dark">A</span>
+                                            <input id="A" type="text" class="mr-2 d-inline-block form-control w-50 ">
+                                            <input type="checkbox" id="radio-A" name="iCheck"
+                                                   class=" iCheck-choice "
+                                                   value="1">
+                                        </div>
+                                        <!--b-->
+                                        <div class="pl-4 form-group  mb-2 pt-2 w-100">
+                                            <span class="mr-2 font-weight-bold badge badge-pill badge-dark">B</span>
+                                            <input id="B" type="text" class="mr-2 d-inline-block form-control w-50 ">
+                                            <input type="checkbox" id="radio-B" name="iCheck"
+                                                   class=" iCheck-choice "
+                                                   value="1">
+                                        </div>
+                                        <!--c-->
+                                        <div class="pl-4 form-group  mb-2 pt-2 w-100">
+                                            <span class="mr-2 font-weight-bold badge badge-pill badge-dark">C</span>
+                                            <input id="C" type="text" class="mr-2 d-inline-block form-control w-50 ">
+                                            <input type="checkbox" id="radio-C" name="iCheck"
+                                                   class=" iCheck-choice "
+                                                   value="1">
+                                        </div>
+                                        <!--d-->
+                                        <div class="pl-4 form-group  mb-2 pt-2 w-100">
+                                            <span class="mr-2 font-weight-bold badge badge-pill badge-dark">D</span>
+                                            <input id="D" type="text" class="mr-2 d-inline-block form-control w-50 ">
+                                            <input type="checkbox" id="radio-D" name="iCheck"
+                                                   class=" iCheck-choice "
+                                                   value="1">
+                                        </div>
+                                        <!--e-->
+                                        <div class="pl-4 form-group  mb-2 pt-2 w-100">
+                                            <span class="mr-2 font-weight-bold badge badge-pill badge-dark">E</span>
+                                            <input id="E" type="text" class="mr-2 d-inline-block form-control w-50 ">
+                                            <input type="checkbox" id="radio-E" name="iCheck"
+                                                   class=" iCheck-choice "
+                                                   value="1">
+                                        </div>
+                                        <!--f-->
+                                        <div class="pl-4 form-group  mb-2 pt-2 w-100">
+                                            <span class="mr-2 font-weight-bold badge badge-pill badge-dark">F</span>
+                                            <input id="F" type="text" class="mr-2 d-inline-block form-control w-50 ">
+                                            <input type="checkbox" id="radio-F" name="iCheck"
+                                                   class=" iCheck-choice "
+                                                   value="1">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--填空题-->
+                            <div id="gap-fill-form" class="question-input-panel collapse w-100">
+                                <div class="col-12 pt-2">
+                                    <label class="form-control-label" for="gap_title">请输入填空题题目:</label>
+                                    <span id="btn-insert-blank"
+                                          class="badge badge-secondary btn btn-outline-primary float-right mr-2"> 插入空格 </span>
+                                    <div class="pl-4 pt-2 form-group  mb-2">
+                                        <!-- is-valid   is-invalid -->
+                                        <textarea style="min-height: 22rem" type="" class="form-control " id="gap_title" onkeyup=""></textarea>
+                                        <div class="invalid-feedback">请输入填空题题目！</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12 pt-2">
+                                    <label class="form-control-label" for="title">请输入填空题答案
+                                        <small>（多个空之间以逗号分隔）</small>
+                                        :</label>
+                                    <div class="pl-4 pt-2 form-group  mb-2">
+                                        <input type="text" class="form-control " id="gap_answer" onkeyup="">
+                                        <div class="invalid-feedback">请输入填空题答案！</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--问答-->
+                            <div id="ask-form" class="question-input-panel w-100 collapse">
+
+                                <div class=" col-12 pt-2 w-75">
+                                    <label class="form-control-label" for="ask_answer">请输入问答题答案
+                                        <small>（请使用英文标点符号）</small>
+                                        :</label>
+                                    <div class="pl-4 pt-2 form-group  mb-2">
+                                        <textarea type="text" class="form-control " id="ask_answer"
+                                                  onkeyup=""></textarea>
+                                        <div class="invalid-feedback">请输入问答题答案！</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--编程题-->
+                            <div id="program-form" class="collapse question-input-panel w-100 ">
+                                <div class=" col-12 pt-2 w-75">
+                                    <label class="form-control-label" for="title">请输入编程题题目 :</label>
+                                    <div class="pl-4 pt-2 form-group  mb-2">
+                                        <textarea type="text" class="form-control " id="program_title"
+                                                  onkeyup=""></textarea>
+                                        <div class="invalid-feedback">请输入编程题题目！</div>
+                                    </div>
+                                </div>
+                                <div class=" col-12 pt-2 w-75 ">
+                                    <label class="form-control-label" for="title">请输入编程题答案:</label>
+                                    <div class="pl-4 pt-2 form-group  mb-2">
+                                        <textarea style="height: 25rem" type="text" class="form-control  "
+                                                  id="program_answer" onkeyup=""></textarea>
+                                        <div class="invalid-feedback">请输入编程题答案！</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--补充信息-->
+                            <div id="common" class=" w-100">
+                                <div class="col-12 pt-2">
+                                    <hr>
+                                    <h5 class="font-weight-bold"> 补充信息 （可选）</h5>
+                                </div>
+                                <input type="hidden" id="title-imgs" value="">
+                                <div class="col-12 mb-3">
+                                    <div class=" pl-4">
+                                        <p> 添加题目详情图片：</p>
+                                        <div class="file-loading">
+                                            <input id="title-imgs-input" name="image-file" type="file" multiple
+                                                   accept="image">
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="answer-imgs" value="">
+                                <div class="col-12 mb-3">
+                                    <div class=" pl-4">
+                                        <p> 添加答案详情图片：</p>
+                                        <div class="file-loading">
+                                            <input id="answer-img-input" name="image-file" type="file" multiple
+                                                   accept="image">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 w-100 pb-3 text-center ">
+                                <hr>
+                                <button class="mr-auto w-75 btn-outline-primary btn " onclick="addQeustion()">
+                                    <i class="far fa-save"></i>确认添加
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-5 mb-3 text-muted text-center">
+        &copy; 2018 <span class="h5 text-danger font-weight-bold">EETU</span> Examination System &nbsp;
+        <div>Power by <a class="text-success" href="http://echo0.cn "> eetn.echo0.cn </a></div>
+    </div>
+</div>
+</body>
+<script>
+
+    var choiceAnswer = new Array();
+
+    /**
+     * 添加题目，这里不做参数校验，由后端提供参数校验信息
+     */
+    function addQeustion() {
+        var type = $("#type").val();
+        var titleImgs = $("#title-imgs").val();
+        var answerImgs = $("#answer-imgs").val();
+        var category = $("#category").val();
+        var title;
+        var answer;
+        var choices = {
+            "A": "",
+            "B": "",
+            "C": "",
+            "D": "",
+            "E": "",
+            "F": ""
+        };
+        title = $("#title").val();
+        switch (type-0) {
+            // 编程
+            case 4:
+                answer = $("#program_answer").val();
+                title = $("#program_title").val();
+                break;
+            // 问答
+            case 3:
+                answer = $("#ask_answer").val();
+                break;
+            // 填空
+            case 2:
+                title = $("#gap_title").val();
+                answer = $("#gap_answer").val();
+                answer = answer.split(",");
+                answer = JSON.stringify(answer);
+                break;
+            //单选,多选
+            default:
+                answer = JSON.stringify(choiceAnswer);
+                choices.A=$("#A").val();
+                choices.B=$("#B").val();
+                choices.C=$("#C").val();
+                choices.D=$("#D").val();
+                choices.E=$("#E").val();
+                choices.F=$("#F").val();
+
+        }
+        const params = new URLSearchParams();
+        choices = JSON.stringify(choices);
+        if(type!=0||type!=1) {
+            choices = "";
+        }
+        console.log("choices : " + choices);
+        params.append("type", type);
+        params.append("category", category);
+        params.append("titleImgs", titleImgs);
+        params.append("answerImgs", answerImgs);
+        params.append("answer", answer);
+        params.append("choices", choices);
+        params.append("title", title);
+
+        instance.post("/question/add", params).then(function (response) {
+            console.log(response.data.desc);
+            if (response.data.code == 0) {
+                simpleSuccessInfo("添加成功 ！");
+                setTimeout(function () {
+                    window.location.href = "add-question.html";
+                }, MIDDLE_DELAY);
+            } else {
+                simpleErrorInfo(response.data.desc);
+                if(response.data.code == RESPONSE_CODE.NO_LOGIN) {
+                    setTimeout(function () {
+                        window.location.href = "../login.html";
+                    }, MIDDLE_DELAY);
+                }
+            }
+        }).catch(function (error) {
+            console.log(error);
+        });
+
+    }
+
+    $(function () {
+    
+        
+        $(".iCheck-choice").on("ifChecked",function () {
+            var choice = this.id.split("-")[1];
+            choiceAnswer.push(choice);
+            console.log("add choice is " + choice);
+        });
+        $(".iCheck-choice").on("ifUnchecked",function () {
+            var choice = this.id.split("-")[1];
+            choiceAnswer = remove(choiceAnswer, choice);
+            console.log("remove choice is " + choice);
+        });
+        
+        $(".iCheck-question-type").on("ifChecked", function () {
+            var type = $(this).val();
+            $("#type").val(type);
+
+            $(".question-input-panel").fadeOut();
+            console.log("current type is :" + type);
+            switch (type - 0) {
+                //单选
+                case 0:
+                    $("#choice-form").fadeIn(MIDDLE_DELAY);
+                    $("#common-title-panel").fadeIn(MIDDLE_DELAY);
+
+                    break;
+                case 1:
+                    $("#choice-form").fadeIn(MIDDLE_DELAY);
+                    $("#common-title-panel").fadeIn(MIDDLE_DELAY);
+                    break;
+                case 2:
+                    $("#gap-fill-form").fadeIn(MIDDLE_DELAY);
+                    break;
+                case 3:
+                    $("#ask-form").fadeIn(MIDDLE_DELAY);
+                    $("#common-title-panel").fadeIn(MIDDLE_DELAY);
+                    break;
+                case 4:
+                    $("#program-form").fadeIn(MIDDLE_DELAY);
+                    break;
+
+            }
+
+
+        })
+        $("#btn-insert-blank").on("click", function () {
+            var originText = $("#gap_title").val();
+            console.log(originText);
+            $("#gap_title").val(originText + "  _blank_  ");
+        });
+
+        $('.iCheck-question-type').iCheck({
+            checkboxClass: 'icheckbox_square',
+            radioClass: 'iradio_square',
+            increaseArea: '20%' // optional
+        })
+
+        $('.iCheck-choice').iCheck({
+            checkboxClass: 'icheckbox_square',
+            radioClass: 'iradio_square',
+            increaseArea: '20%' // optional
+        })
+
+
+        $("#title-imgs-input").fileinput({
+            uploadUrl: "http://localhost/exam/image/upload",
+            language: "zh",
+            allowedFileExtensions: ['jpg', 'png', 'gif'],
+            overwriteInitial: true,
+            initialPreviewAsData: true
+        });
+
+        $("#title-imgs-input").on('fileuploaded', function (event, data, previewId, index) {
+            response = data.response;
+            var $imges = $("#title-imgs");
+            var value = $imges.val();
+            value += ";" + response.data;
+            $imges.val(value);
+            console.log(value);
+        });
+
+
+        $("#answer-img-input").fileinput({
+            uploadUrl: "http://localhost/exam/image/upload",
+            language: "zh",
+            allowedFileExtensions: ['jpg', 'png', 'gif'],
+            overwriteInitial: true,
+            initialPreviewAsData: true
+        });
+
+        $("#answer-img-input").on('fileuploaded', function (event, data, previewId, index) {
+            response = data.response;
+            var $imges = $("#answer-imgs");
+            var value = $imges.val();
+            value += ";" + response.data;
+            $imges.val(value);
+            console.log(value);
+        });
+    });
+</script>
+</html>

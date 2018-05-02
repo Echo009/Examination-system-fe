@@ -6,38 +6,42 @@
 // it depends on jQuery , sweetalert.js , axios.js
 function simpleSuccessInfo(content) {
     swal({
-        icon:"success",
-        text:content,
-        button:false,
-        timer:MIDDLE_DELAY,
+        icon: "success",
+        text: content,
+        button: false,
+        timer: MIDDLE_DELAY,
     });
     return true;
 }
+
 function simpleErrorInfo(content) {
     swal({
-        icon:"error",
-        text:content,
-        button:false,
-        timer:MIDDLE_DELAY,
+        icon: "error",
+        text: content,
+        button: false,
+        timer: MIDDLE_DELAY,
     });
     return true;
 }
+
 function simpleWarningInfo(content) {
     swal({
-        icon:"warning",
-        text:content,
-        button:false,
-        timer:LONG_DELAY,
+        icon: "warning",
+        text: content,
+        button: false,
+        timer: LONG_DELAY,
     });
     return true;
 }
+
 // xhr config
 var instance = axios.create({
     baseURL: 'http://localhost/exam/',
     timeout: 500,
-    withCredentials:true,
+    withCredentials: true,
     headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 });
+
 function logout() {
     instance.get('/common/logout')
         .then(function (response) {
@@ -49,24 +53,27 @@ function logout() {
         });
     store.remove(CURRENT_USER);
     //refresh page
-    setTimeout("window.location.href='index.html'",MIDDLE_DELAY);
+    setTimeout("window.location.href='index.html'", MIDDLE_DELAY);
 }
-function getQueryVariable(variable)
-{
+
+function getQueryVariable(variable) {
     var query = window.location.search.substring(1);
     var vars = query.split("&");
-    for (var i=0;i<vars.length;i++) {
+    for (var i = 0; i < vars.length; i++) {
         var pair = vars[i].split("=");
-        if(pair[0] == variable){return pair[1];}
+        if (pair[0] == variable) {
+            return pair[1];
+        }
     }
     return false;
 }
+
 function updateUserInfo() {
 
     instance.get('/common/userInfo')
         .then(function (response) {
             console.log("update userInfo :" + response.data.data.userName);
-            store.set(CURRENT_USER,response.data.data);
+            store.set(CURRENT_USER, response.data.data);
         })
         .catch(function (error) {
             console.log(error);
@@ -74,17 +81,16 @@ function updateUserInfo() {
 };
 
 
-
-
 $(function () {
+
     $(document).on("click", ".search-option", function () {
         var $this = $(this);
         $("#searchOption").text($this.text());
     });
-    $(document).on("click",".personal-center-nav",function () {
+    $(document).on("click", ".personal-center-nav", function () {
         var $this = $(this);
         var href = $this.attr("data-target-href");
-        if(href == undefined){
+        if (href == undefined) {
             return;
         }
         window.location.href = href;
@@ -102,3 +108,13 @@ $(function () {
         window.location.href = targetLink;
     })
 });
+
+function remove(arr, item) {
+    var newArr = arr.slice(0);
+    for(var i=0; i<newArr.length; i++) {
+        if(newArr[i] == item) {
+            newArr.splice(i, 1);
+        }
+    }
+    return newArr;
+}
