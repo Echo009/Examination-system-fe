@@ -4,7 +4,7 @@
  * Time   : 04/21/2018 12:33 AM
  */
 
-
+const CONTEXT = "http://localhost:63342/examination-system-fe/";
 const CURRENT_USER = "currentUser_exam";
 const USER_NAME = "userName_exam";
 const PASSWORD = "password_exam";

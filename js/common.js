@@ -86,6 +86,8 @@ $(function () {
     $(document).on("click", ".search-option", function () {
         var $this = $(this);
         $("#searchOption").text($this.text());
+        $("#searchOption").attr("data-category-code",$this.attr("data-category-code"));
+
     });
     $(document).on("click", ".personal-center-nav", function () {
         var $this = $(this);
@@ -98,10 +100,12 @@ $(function () {
     $("[data-toggle='tooltip']").tooltip();
     // todo modify
     $("#search-btn").on("click", function () {
-        var category = $.trim($("#searchOption").text());
+        var category = $("#searchOption").attr("data-category-code");
         var keyword = $.trim($("#search-keyword").val());
-        var targetLink = "./search.html?bookName=" + keyword;
-        if (category != "所有分类") {
+        console.log("search category is  " + category);
+        console.log("search keyword is  " + keyword);
+        var targetLink = CONTEXT+"page/search.html?title=" + keyword;
+        if (category != 6) {
             targetLink += "&category=" + category;
         }
         console.log(targetLink);
@@ -117,4 +121,35 @@ function remove(arr, item) {
         }
     }
     return newArr;
+}
+
+
+function getCategoryName(value) {
+    try {
+        switch (value-0){
+            case 0 : return "编程语言" ;
+            case 1 : return "算法" ;
+            case 2 : return "数据结构" ;
+            case 3 : return "数学和逻辑" ;
+            case 4 : return "计算机基础" ;
+            case 5 : return "软件开发" ;
+        }
+    }catch (e){
+        console.log(e);
+    }
+}
+
+
+function getTypeName(value) {
+    try {
+        switch (value-0){
+            case 0 : return "单选" ;
+            case 1 : return "多选" ;
+            case 2 : return "填空" ;
+            case 3 : return "问答" ;
+            default : return "编程" ;
+        }
+    }catch (e){
+        console.log(e);
+    }
 }

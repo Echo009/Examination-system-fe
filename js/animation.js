@@ -11,8 +11,9 @@ canvas.width = WIDTH,
     canvas.height = HEIGHT;
 var context = canvas.getContext('2d');
 context.strokeStyle = 'rgba(0,0,255,0.5)',
-    context.strokeWidth = 1,
-    context.fillStyle = 'rgba(0,170,144,0.5)';
+    context.strokeWidth = 2,
+    context.fillStyle = 'rgba(200,200,200,1)';
+    // context.fillStyle = 'rgba(0,170,144,0.5)';
 var circleArr = [];
 
 //线条：开始xy坐标，结束xy坐标，线条透明度
@@ -49,7 +50,7 @@ function drawCricle (cxt, x, y, r, moveX, moveY) {
 function drawLine (cxt, x, y, _x, _y, o) {
     var line = new Line(x, y, _x, _y, o)
     cxt.beginPath()
-    cxt.strokeStyle = 'rgba(0,0,0,'+ o +')'
+    cxt.strokeStyle = 'rgba(55,55,55,'+ o +')'
     cxt.moveTo(line.beginX, line.beginY)
     cxt.lineTo(line.closeX, line.closeY)
     cxt.closePath()
@@ -78,7 +79,7 @@ function draw () {
                     B = Math.abs(circleArr[i+j].y - circleArr[i].y);
                 var lineLength = Math.sqrt(A*A + B*B);
                 var C = 1/lineLength*7-0.009;
-                var lineOpacity = C > 0.03 ? 0.03 : C;
+                var lineOpacity = C > 0.03 ? 0.3 : C;
                 if (lineOpacity > 0) {
                     drawLine(context, circleArr[i].x, circleArr[i].y, circleArr[i+j].x, circleArr[i+j].y, lineOpacity);
                 }

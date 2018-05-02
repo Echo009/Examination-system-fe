@@ -20,6 +20,8 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdn.bootcss.com/store.js/1.3.20/store.js"></script>
     <script src="https://cdn.bootcss.com/axios/0.18.0/axios.js"></script>
+    <!--vue-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
     <script src="../js/constant.js"></script>
     <script src="../js/common.js"></script>
     <!--todo modify-->
@@ -117,12 +119,129 @@
     </div>
     <div class="content mt-2">
 
+        <div  class="row text-center">
+            <div class="col-12 pt-3">
+                <h2 class="jumbotron-heading badge badge-dark">
+                    <span id="current-search-key-word" class="h3   font-weight-bold mr-1">刺杀</span>
+                    <i class="h2 text-info fas fa-search"></i>
+                </h2>
+                <h6 class="lead text-secondary">Always believe that something wonderful is about to happen.</h6>
+                <h6 id="success-tip" class="d-none">一共为您找到<span id="total-elements"
+                                                                class="mr-3 ml-3 h4 font-weight-bold text-danger">3</span>道题！
+                </h6>
+                <h6 id="empty-tip" class=" mt-5 mb-5 h3 d-none font-weight-bold text-dark ">抱歉， 暂未搜索到相关题目 。 。 。</h6>
+            </div>
+            <!--item-->
+            <div class="collapse col-12 pt-2 border rounded btn btn-outline-success pl-lg-5  ">
+                <span class="badge badge-dark mr-3 float-left ">编程语言</span>
+                <span class="badge badge-pill badge-info  float-left">选择</span>
+                <h5 class=" font-weight-bold d-md-inline-block d-sm-block  ">下面Java中关于List、Set的说法哪些是正确的？</h5>
+                <span class="h5 float-right text-danger mr-3 "><i class="fas fa-fire"></i> <small>188</small> </span>
+            </div>
+        </div>
+        <!--vue-->
+        <div id="question-container" class="row">
+            <div v-for="item in items" class="col-12 pt-2 border rounded btn btn-outline-dark pl-lg-5">
+                <span class="badge badge-dark mr-3 float-left ">{{ item.category | categoryFilter }}</span>
+                <span class="badge badge-pill badge-info  float-left">{{ item.type | typeFilter }}</span>
+                <h6 class=" font-weight-bold d-md-inline-block d-sm-block  ">{{ item.title | titleFilter }}</h6>
+                <span class="h5 float-right text-danger mr-3 "><i class="fas fa-fire"></i> <small>{{ item.useTimes }}</small> </span>
+            </div>
+        </div>
     </div>
     <div class=" text-muted " style="text-align:center; position: absolute; bottom: 1% ; left: 43%">
         &copy; 2018 <span class="h5 text-danger font-weight-bold">EETU</span> Examination System &nbsp;
         <div>Power by <a class="text-success" href="http://echo0.cn "> eetn.echo0.cn </a></div>
     </div>
 </div>
+
 </body>
+<script>
+    $(function () {
+        // 检查登录状态
+        var currentUser = store.get(CURRENT_USER);
+        try {
+            if (currentUser.userName) {
+                console.log("current user : " + currentUser.userName);
+                $("#login-links").addClass("d-none");
+                $("#personal-links").removeClass("d-none");
+            }
+        } catch (e) {
+            console.log("not login !");
+        }
+        // vue
+        Vue.filter('categoryFilter', function (value) {
+            return getCategoryName(value);
+        });
+        Vue.filter('typeFilter', function (value) {
+            return getTypeName(value);
+        })
+        Vue.filter('titleFilter', function (value) {
+            if(value.length > 60 ) {
+                return value.substr(0, 60) + "...";
+            }
+            return value
+        })
+        var data = new Vue({
+            el: '#question-container',
+            data: {
+                parentMessage: 'Parent',
+                items: []
+            }
+        })
+
+        // init
+
+        var title = getQueryVariable("title");
+        var temp;
+        if (title == false || title.length == 0) {
+            temp = "' 所有题目 '";
+            title = '';
+        } else {
+            title = decodeURI(title);
+            temp = '" ' + title + ' "';
+        }
+        $("#search-keyword").val(title);
+        $("#current-search-key-word").text(temp);
+
+        var category = getQueryVariable("category");
+        if (category !== false) {
+            $("#searchOption").text(getCategoryName(category));
+        }
+        else {
+            category = "";
+        }
+        var pageNum = getQueryVariable("pageNum");
+        pageNum = pageNum == false ? 1 : pageNum;
+        console.log("category :" + category);
+        console.log("title :" + title);
+        console.log("pageNum :" + pageNum);
+
+        const params = new URLSearchParams();
+        params.append("category", category);
+        params.append("keyWord", title);
+        params.append("pageNum", pageNum);
+
+        instance.post('/questionInfo/search', params)
+            .then(function (response) {
+                var totalPages = response.data.data.totalPages;
+                var totalElements = response.data.data.totalElements;
+                if (totalElements > 0) {
+                    $("#total-elements").text(totalElements);
+                    $("#success-tip").removeClass("d-none");
+                } else {
+                    $("#empty-tip").removeClass("d-none");
+                }
+                console.log("total pages   :" + response.data.data.totalPages);
+                console.log("total element  :" + response.data.data.totalElements);
+                console.log(JSON.stringify(response.data.data.content));
+                //
+                data.items = response.data.data.content;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    });
+</script>
 <script src="../js/animation.js"></script>
 </html>

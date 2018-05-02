@@ -43,18 +43,18 @@
                     <!--分类下拉框-->
                     <li class="nav-item dropdown ">
                         <div class="nav-link dropdown-toggle btn btn-primary" data-toggle="dropdown"><span
-                                id="searchOption" class="pl-2">所有题库</span> <span class="caret"></span></div>
+                                id="searchOption" class="pl-2" data-category-code="6">所有题库</span> <span class="caret"></span></div>
                         <div class="dropdown-menu ">
                             <!--fixed category -->
-                            <div class="search-option dropdown-item"><i class="fas fa-terminal"></i>编程语言</div>
-                            <div class="search-option dropdown-item"><i class="fas fa-chart-bar"></i></i>算法</div>
-                            <div class="search-option dropdown-item"><i class="fab fa-stumbleupon-circle"></i>数据结构</div>
-                            <div class="search-option dropdown-item"><i class="fab fa-app-store"></i>数学和逻辑</div>
+                            <div class="search-option dropdown-item" data-category-code="0"><i class="fas fa-terminal"></i>编程语言</div>
+                            <div class="search-option dropdown-item" data-category-code="1"><i class="fas fa-chart-bar"></i></i>算法</div>
+                            <div class="search-option dropdown-item" data-category-code="2"><i class="fab fa-stumbleupon-circle"></i>数据结构</div>
+                            <div class="search-option dropdown-item" data-category-code="3"><i class="fab fa-app-store"></i>数学和逻辑</div>
 
-                            <div class="search-option dropdown-item"><i class="fab fa-connectdevelop"></i>计算机基础</div>
-                            <div class="search-option dropdown-item"><i class="fas fa-code"></i>软件开发</div>
+                            <div class="search-option dropdown-item" data-category-code="4"><i class="fab fa-connectdevelop"></i>计算机基础</div>
+                            <div class="search-option dropdown-item" data-category-code="5"><i class="fas fa-code"></i>软件开发</div>
                             <hr>
-                            <div class="search-option dropdown-item"><i class="fas fa-random"></i>所有题库</div>
+                            <div class="search-option dropdown-item"><i class="fas fa-random" data-category-code="6"></i>所有题库</div>
                         </div>
                     </li>
                     <li class="nav-item ml-3 ">
@@ -64,7 +64,7 @@
                         </form>
                     </li>
                     <li class="nav-item ml-3 ">
-                        <div class="search-btn btn btn-secondary btn-block  my-2 my-sm-0"><i
+                        <div id="search-btn" class="search-btn btn btn-secondary btn-block  my-2 my-sm-0"><i
                                 class="h5  mr-1 fas fa-search-plus"></i></div>
                     </li>
                 </ul>

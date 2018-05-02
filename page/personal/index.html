@@ -28,6 +28,7 @@
 
 </head>
 <body>
+<canvas id="Mycanvas" style="z-index: -999;position: absolute"></canvas>
 <div class="container">
     <div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary ">
         <div class="container">
@@ -43,18 +44,18 @@
                     <!--分类下拉框-->
                     <li class="nav-item dropdown ">
                         <div class="nav-link dropdown-toggle btn btn-primary" data-toggle="dropdown"><span
-                                id="searchOption" class="pl-2">所有题库</span> <span class="caret"></span></div>
+                                id="searchOption" class="pl-2" data-category-code="6">所有题库</span> <span class="caret"></span></div>
                         <div class="dropdown-menu ">
                             <!--fixed category -->
-                            <div class="search-option dropdown-item"><i class="fas fa-terminal"></i>编程语言</div>
-                            <div class="search-option dropdown-item"><i class="fas fa-chart-bar"></i></i>算法</div>
-                            <div class="search-option dropdown-item"><i class="fab fa-stumbleupon-circle"></i>数据结构</div>
-                            <div class="search-option dropdown-item"><i class="fab fa-app-store"></i>数学和逻辑</div>
+                            <div class="search-option dropdown-item" data-category-code="0"><i class="fas fa-terminal"></i>编程语言</div>
+                            <div class="search-option dropdown-item" data-category-code="1"><i class="fas fa-chart-bar"></i></i>算法</div>
+                            <div class="search-option dropdown-item" data-category-code="2"><i class="fab fa-stumbleupon-circle"></i>数据结构</div>
+                            <div class="search-option dropdown-item" data-category-code="3"><i class="fab fa-app-store"></i>数学和逻辑</div>
 
-                            <div class="search-option dropdown-item"><i class="fab fa-connectdevelop"></i>计算机基础</div>
-                            <div class="search-option dropdown-item"><i class="fas fa-code"></i>软件开发</div>
+                            <div class="search-option dropdown-item" data-category-code="4"><i class="fab fa-connectdevelop"></i>计算机基础</div>
+                            <div class="search-option dropdown-item" data-category-code="5"><i class="fas fa-code"></i>软件开发</div>
                             <hr>
-                            <div class="search-option dropdown-item"><i class="fas fa-random"></i>所有题库</div>
+                            <div class="search-option dropdown-item"><i class="fas fa-random" data-category-code="6"></i>所有题库</div>
                         </div>
                     </li>
                     <li class="nav-item ml-3 ">
@@ -64,33 +65,52 @@
                         </form>
                     </li>
                     <li class="nav-item ml-3 ">
-                        <div class="search-btn btn btn-secondary btn-block  my-2 my-sm-0"><i
+                        <div id="search-btn" class="search-btn btn btn-secondary btn-block  my-2 my-sm-0"><i
                                 class="h5  mr-1 fas fa-search-plus"></i></div>
                     </li>
                 </ul>
-                <!--右侧个人选项-->
-                <div class="nav navbar-nav float-right ">
-                    <div class="nav-item mr-3">
-                        <div class="btn-group" role="group" aria-label="Basic example">
-                            <div class="btn-group" role="group">
-                                <button id="btnGroupDrop2" type="button" class="btn btn-primary dropdown-toggle"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img id="nav-head-img" class="rounded"
+                <div id="login-links" >
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="../login.html#1" target="_top">登录</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../login.html#2" target="_top">注册</a>
+                        </li>
+                    </ul>
+                </div>
+                <!--已经登录-->
+                <div id="personal-links" class="d-none ">
+                    <div class="nav navbar-nav mr-auto ">
+                        <div class="nav-item mr-3">
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-primary">
+                                    <img id="nav-head-img" class="rounded-circle"
                                          src="http://p7vng16qv.bkt.clouddn.com/04035c2b-5c7b-49dc-8b2e-8f818f78ae29"
-                                         style="max-width: 2.4rem">
+                                         style="max-width: 2rem">
                                 </button>
-                                <div class="dropdown-menu" aria-labelledby="btnGroupDrop2">
-                                    <a class="dropdown-item" href="#"><i class="fas fa-heart"></i>题目收藏</a>
-                                    <a class="dropdown-item" href="#"><i class="fas fa-book"></i>刷题记录</a>
-                                    <a class="dropdown-item" href="#"><i class="fas fa-terminal"></i>我的简历</a>
-                                    <a class="dropdown-header" onclick="logout()"> <i
-                                            class=" pl-2 h5 fas fa-sign-out-alt"></i>退出</a>
+                                <button type="button" class="btn btn-primary"
+                                        onclick="window.location.href='./personal/index.html'">
+                                    个人中心
+                                </button>
+                                <div class="btn-group" role="group">
+                                    <button id="btnGroupDrop2" type="button" class="btn btn-success dropdown-toggle"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop2">
+                                        <a class="dropdown-item" href="#"><i class="fas fa-heart"></i>题目收藏</a>
+                                        <a class="dropdown-item" href="#"><i class="fas fa-book"></i>刷题记录</a>
+                                        <a class="dropdown-item" href="#"><i class="fas fa-terminal"></i>我的简历</a>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="nav-item ">
+                            <div class="nav-link btn " onclick="logout()">退出
+                                <i class=" pl-2 h5 fas fa-sign-out-alt"></i>
+                            </div>
+                        </div>
                     </div>
-
-
                 </div>
             </div>
         </div>
@@ -287,4 +307,5 @@
     });
 
 </script>
+<script src="../../js/animation.js"></script>
 </html>
