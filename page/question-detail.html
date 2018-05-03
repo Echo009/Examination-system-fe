@@ -16,12 +16,13 @@
     <script src="../lib/bootstrap/bootstrap.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css"
           integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+
     <!--sweetalert-->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdn.bootcss.com/store.js/1.3.20/store.js"></script>
     <script src="https://cdn.bootcss.com/axios/0.18.0/axios.js"></script>
+    <!--vue-->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
-
     <script src="../js/constant.js"></script>
     <script src="../js/common.js"></script>
     <!--todo modify-->
@@ -30,6 +31,7 @@
 <body>
 <canvas id="Mycanvas" style="z-index: -999;position: absolute"></canvas>
 <div class="container">
+
 
     <div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary ">
         <div class="container">
@@ -116,18 +118,54 @@
             </div>
         </div>
     </div>
-    <div class="content mt-2">
-
+    <div id="question-container"  class="row  mt-5 border rounded pt-3 pb-5">
+        <!--title-->
+        <div class="col-2  d-flex">
+            <span class="badge badge-pill badge-info">{{ question.type | typeFilter }}</span>
+            <span class="pl-2 badge badge-dark ">{{ question.category | categoryFilter }}</span>
+        </div>
+        <div class="col-9   d-flex vcenter">
+            <data class="d-none">{{ question.id }}</data>
+            <h5 class="font-weight-bold text-secondary d-inline-block">{{ question.title }}
+            </h5>
+        </div>
+        <div class="col-1  d-flex">
+            <span class="h5 float-right text-danger mr-3  "><i class="fas fa-fire"></i> <small>{{ question.useTimes }}</small> </span>
+        </div>
+        <!--title-img-->
+        <div v-for="img in question.titleImgs " class="col-12 offset-2 pt-3">
+            <img :src="img" class="img-thumbnail d-block" >
+        </div>
+        <!--options-->
+        <div class="col-12 ol-md-8 offset-md-2 text-left pt-2">
+            <div v-for="(value, key) in question.choices" class="btn-group-vertical btn-group-toggle pt-2 pb-2  w-75 " data-toggle="buttons">
+                <label class="text-left btn btn-outline-primary rounded  border-0 pb-2    ">
+                    <input type="checkbox" name="options" autocomplete="off" checked="checked">
+                    <span class="badge badge-pill badge-info mr-5 text-uppercase">{{ key }}</span></i>{{ value }}
+                </label>
+            </div>
+        </div>
+        <div class="col-3 offset-9">
+            <div class="btn btn-block btn-info w-75 rounded" onclick="showAnswer()">查看正确答案</div>
+        </div>
+        <!--answer-->
+        <div id="answer" class="collapse col-12 col-md-8 offset-md-2 text-left pt-2 ">
+           正确答案 ：  <span class="badge badge-pill badge-success ">{{ question.answer | answerFilter }}</span>
+        </div>
     </div>
-    <div class="mt-5 mb-3 text-muted text-center">
+    <div class=" text-muted " style="text-align:center; position: absolute; bottom: 1% ; left: 43%">
         &copy; 2018 <span class="h5 text-danger font-weight-bold">EETU</span> Examination System &nbsp;
         <div>Power by <a class="text-success" href="http://echo0.cn "> eetn.echo0.cn </a></div>
     </div>
 </div>
-
 </body>
 <script>
-    window.location.href = './personal/index.html';
+    var choiceAnswer = new Array();
+
+    function showAnswer() {
+        $("#answer").fadeIn(MIDDLE_DELAY);
+    }
+
     $(function () {
         // 检查登录状态
         var currentUser = store.get(CURRENT_USER);
@@ -140,7 +178,40 @@
         } catch (e) {
             console.log("not login !");
         }
+
+        var data = new Vue({
+            el: '#question-container',
+            data: {
+                question:""
+            }
+        })
+
+        // init
+
+        var questionId =getQueryVariable("questionId");
+        const params = new URLSearchParams();
+        params.append("questionId", questionId);
+        console.log("questionId is "+ questionId);
+
+        instance.post('/questionInfo/find', params)
+            .then(function (response) {
+
+                console.log(JSON.stringify(response.data.data));
+                //
+
+                data.question = handle(response.data.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     });
+
+    function handle(question) {
+
+        question.titleImgs = question.titleImgs.split(';');
+        return question;
+
+    }
 </script>
 <script src="../js/animation.js"></script>
 </html>

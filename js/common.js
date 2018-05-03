@@ -83,10 +83,17 @@ function updateUserInfo() {
 
 $(function () {
 
+
+    $(document).on("click", ".question", function () {
+        var $this = $(this);
+        window.location.href=CONTEXT+"page/question-detail.html?questionId="+$this.children("data").text();
+
+    });
+
     $(document).on("click", ".search-option", function () {
         var $this = $(this);
         $("#searchOption").text($this.text());
-        $("#searchOption").attr("data-category-code",$this.attr("data-category-code"));
+        $("#searchOption").attr("data-category-code", $this.attr("data-category-code"));
 
     });
     $(document).on("click", ".personal-center-nav", function () {
@@ -104,7 +111,7 @@ $(function () {
         var keyword = $.trim($("#search-keyword").val());
         console.log("search category is  " + category);
         console.log("search keyword is  " + keyword);
-        var targetLink = CONTEXT+"page/search.html?title=" + keyword;
+        var targetLink = CONTEXT + "page/search.html?title=" + keyword;
         if (category != 6) {
             targetLink += "&category=" + category;
         }
@@ -115,8 +122,8 @@ $(function () {
 
 function remove(arr, item) {
     var newArr = arr.slice(0);
-    for(var i=0; i<newArr.length; i++) {
-        if(newArr[i] == item) {
+    for (var i = 0; i < newArr.length; i++) {
+        if (newArr[i] == item) {
             newArr.splice(i, 1);
         }
     }
@@ -126,15 +133,21 @@ function remove(arr, item) {
 
 function getCategoryName(value) {
     try {
-        switch (value-0){
-            case 0 : return "编程语言" ;
-            case 1 : return "算法" ;
-            case 2 : return "数据结构" ;
-            case 3 : return "数学和逻辑" ;
-            case 4 : return "计算机基础" ;
-            case 5 : return "软件开发" ;
+        switch (value - 0) {
+            case 0 :
+                return "编程语言";
+            case 1 :
+                return "算法";
+            case 2 :
+                return "数据结构";
+            case 3 :
+                return "数学和逻辑";
+            case 4 :
+                return "计算机基础";
+            case 5 :
+                return "软件开发";
         }
-    }catch (e){
+    } catch (e) {
         console.log(e);
     }
 }
@@ -142,14 +155,59 @@ function getCategoryName(value) {
 
 function getTypeName(value) {
     try {
-        switch (value-0){
-            case 0 : return "单选" ;
-            case 1 : return "多选" ;
-            case 2 : return "填空" ;
-            case 3 : return "问答" ;
-            default : return "编程" ;
+        switch (value - 0) {
+            case 0 :
+                return "单选";
+            case 1 :
+                return "多选";
+            case 2 :
+                return "填空";
+            case 3 :
+                return "问答";
+            default :
+                return "编程";
         }
-    }catch (e){
+    } catch (e) {
         console.log(e);
     }
+}
+
+
+if ("undefined" != typeof Vue) {
+    // vue
+    Vue.filter('categoryFilter', function (value) {
+        return getCategoryName(value);
+    });
+    Vue.filter('typeFilter', function (value) {
+        return getTypeName(value);
+    })
+    Vue.filter('titleFilter', function (value) {
+        if (value.length > 60) {
+            return value.substr(0, 60) + "...";
+        }
+        return value
+    })
+    Vue.filter('titleImgFilter', function (value) {
+
+        return value.split(";");
+    })
+    Vue.filter('answerFilter', function (value) {
+        console.log(value);
+        try {
+            value = JSON.parse(value);
+        }catch (e){
+
+        }
+        console.log(value instanceof Array);
+
+        if (value instanceof Array) {
+
+            var result = '';
+            value.forEach(function (t) {
+                result += t + " "
+            })
+            return result.toUpperCase();
+        }
+        return $.trim(value);
+    })
 }

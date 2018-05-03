@@ -141,11 +141,22 @@
         </div>
         <!--vue-->
         <div id="question-container" class="row">
-            <div v-for="item in items" class="col-12 pt-2 border rounded btn btn-outline-dark pl-lg-5">
+            <div v-for="item in items" class="question col-12 pt-2 border rounded btn btn-outline-dark pl-lg-5" >
+                <data class="d-none">{{ item.id }}</data>
                 <span class="badge badge-dark mr-3 float-left ">{{ item.category | categoryFilter }}</span>
                 <span class="badge badge-pill badge-info  float-left">{{ item.type | typeFilter }}</span>
                 <h6 class=" font-weight-bold d-md-inline-block d-sm-block  ">{{ item.title | titleFilter }}</h6>
                 <span class="h5 float-right text-danger mr-3 "><i class="fas fa-fire"></i> <small>{{ item.useTimes }}</small> </span>
+            </div>
+
+        </div>
+        <div id="pagination" class="col-12 pt-3 text-left">
+            <span class="pl-5"> 第<span id="current-page" class="badge badge-pill badge-success ">{{ currentPage }}</span>页</span>
+
+            <div class="btn-group float-right" role="group" aria-label="Basic example">
+                <data id="total-page" class="d-none">{{ totalPages }}</data>
+                <button type="button" class="btn btn-secondary " onclick="prePage(this)">上一页</button>
+                <button type="button" class="btn btn-secondary" onclick="nextPage(this)">下一页</button>
             </div>
         </div>
     </div>
@@ -157,7 +168,39 @@
 
 </body>
 <script>
+
+    function nextPage(btn) {
+       var total =  $("#total-page").text()-0;
+       var next = $("#current-page").text()-0+1;
+
+       if (next>total) {
+           simpleErrorInfo("没有下一页");
+           $(btn).attr("disabled","disabled");
+       }
+       else {
+           window.location.href=CONTEXT+'page/search.html?pageNum='+next;
+       }
+
+    }
+    function prePage(btn) {
+        var total =  $("#total-page").text()-0;
+        var pre = $("#current-page").text()-1;
+
+        if (pre<1) {
+            simpleErrorInfo("没有上一页");
+            $(btn).attr("disabled","disabled");
+        }
+        else {
+            window.location.href=CONTEXT+'page/search.html?pageNum='+pre;
+        }
+
+    }
+
+
     $(function () {
+
+
+
         // 检查登录状态
         var currentUser = store.get(CURRENT_USER);
         try {
@@ -185,8 +228,14 @@
         var data = new Vue({
             el: '#question-container',
             data: {
-                parentMessage: 'Parent',
                 items: []
+            }
+        })
+        var pageination = new Vue({
+            el: '#pagination',
+            data: {
+                currentPage: 1,
+                totalPages: 1,
             }
         })
 
@@ -226,6 +275,8 @@
             .then(function (response) {
                 var totalPages = response.data.data.totalPages;
                 var totalElements = response.data.data.totalElements;
+                pageination.currentPage = response.data.data.currentPage;
+                pageination.totalPages = response.data.data.totalPages;
                 if (totalElements > 0) {
                     $("#total-elements").text(totalElements);
                     $("#success-tip").removeClass("d-none");
@@ -234,7 +285,6 @@
                 }
                 console.log("total pages   :" + response.data.data.totalPages);
                 console.log("total element  :" + response.data.data.totalElements);
-                console.log(JSON.stringify(response.data.data.content));
                 //
                 data.items = response.data.data.content;
             })
