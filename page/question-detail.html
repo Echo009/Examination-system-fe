@@ -133,7 +133,7 @@
             <span class="h5 float-right text-danger mr-3  "><i class="fas fa-fire"></i> <small>{{ question.useTimes }}</small> </span>
         </div>
         <!--title-img-->
-        <div v-for="img in question.titleImgs " class="col-12 offset-2 pt-3">
+        <div v-if="hasTitleImg" v-for="img in question.titleImgs " class="col-12 offset-2 pt-3 ">
             <img :src="img" class="img-thumbnail d-block" >
         </div>
         <!--options-->
@@ -150,12 +150,18 @@
         </div>
         <!--answer-->
         <div id="answer" class="collapse col-12 col-md-8 offset-md-2 text-left pt-2 ">
-           正确答案 ：  <span class="badge badge-pill badge-success ">{{ question.answer | answerFilter }}</span>
+            <div>
+                正确答案 ：  <span class="badge badge-pill badge-success ">{{ question.answer | answerFilter }}</span>
+            </div>
+            <!--answer-img-->
+            <div v-if="hasAnswerImg" v-for="img in question.answerImgs " class="col-12 offset-2 pt-3 ">
+                <img :src="img" class="img-thumbnail d-block" >
+            </div>
         </div>
     </div>
-    <div class=" text-muted " style="text-align:center; position: absolute; bottom: 1% ; left: 43%">
-        &copy; 2018 <span class="h5 text-danger font-weight-bold">EETU</span> Examination System &nbsp;
-        <div>Power by <a class="text-success" href="http://echo0.cn "> eetn.echo0.cn </a></div>
+    <div class="mt-5 mb-3 text-muted text-center">
+        &copy; 2018 <span class="text-info font-weight-bold">EETU</span> Examination System &nbsp;
+        <div>Power by <a href="http://echo0.cn "> eetn.echo0.cn </a></div>
     </div>
 </div>
 </body>
@@ -182,7 +188,9 @@
         var data = new Vue({
             el: '#question-container',
             data: {
-                question:""
+                question:"",
+                hasTitleImg:false,
+                hasAnswerImg:false
             }
         })
 
@@ -200,18 +208,15 @@
                 //
 
                 data.question = handle(response.data.data);
+                data.hasTitleImg = hasImgTitle(data.question);
+                data.hasAnswerImg = hasImgAnswer(data.question);
             })
             .catch(function (error) {
                 console.log(error);
             });
     });
 
-    function handle(question) {
 
-        question.titleImgs = question.titleImgs.split(';');
-        return question;
-
-    }
 </script>
 <script src="../js/animation.js"></script>
 </html>

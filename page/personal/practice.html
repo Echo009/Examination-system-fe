@@ -33,7 +33,7 @@
     <script src="../../js/common.js"></script>
 
     <!--todo modify-->
-    <link rel="stylesheet" href="../../css/custom.css" >
+    <link rel="stylesheet" href="../../css/custom.css">
 </head>
 <body>
 <canvas id="Mycanvas" style="z-index: -999;position: absolute"></canvas>
@@ -52,18 +52,32 @@
                     <!--分类下拉框-->
                     <li class="nav-item dropdown ">
                         <div class="nav-link dropdown-toggle btn btn-primary" data-toggle="dropdown"><span
-                                id="searchOption" class="pl-2" data-category-code="6">所有题库</span> <span class="caret"></span></div>
+                                id="searchOption" class="pl-2" data-category-code="6">所有题库</span> <span
+                                class="caret"></span></div>
                         <div class="dropdown-menu ">
                             <!--fixed category -->
-                            <div class="search-option dropdown-item" data-category-code="0"><i class="fas fa-terminal"></i>编程语言</div>
-                            <div class="search-option dropdown-item" data-category-code="1"><i class="fas fa-chart-bar"></i></i>算法</div>
-                            <div class="search-option dropdown-item" data-category-code="2"><i class="fab fa-stumbleupon-circle"></i>数据结构</div>
-                            <div class="search-option dropdown-item" data-category-code="3"><i class="fab fa-app-store"></i>数学和逻辑</div>
+                            <div class="search-option dropdown-item" data-category-code="0"><i
+                                    class="fas fa-terminal"></i>编程语言
+                            </div>
+                            <div class="search-option dropdown-item" data-category-code="1"><i
+                                    class="fas fa-chart-bar"></i></i>算法
+                            </div>
+                            <div class="search-option dropdown-item" data-category-code="2"><i
+                                    class="fab fa-stumbleupon-circle"></i>数据结构
+                            </div>
+                            <div class="search-option dropdown-item" data-category-code="3"><i
+                                    class="fab fa-app-store"></i>数学和逻辑
+                            </div>
 
-                            <div class="search-option dropdown-item" data-category-code="4"><i class="fab fa-connectdevelop"></i>计算机基础</div>
-                            <div class="search-option dropdown-item" data-category-code="5"><i class="fas fa-code"></i>软件开发</div>
+                            <div class="search-option dropdown-item" data-category-code="4"><i
+                                    class="fab fa-connectdevelop"></i>计算机基础
+                            </div>
+                            <div class="search-option dropdown-item" data-category-code="5"><i class="fas fa-code"></i>软件开发
+                            </div>
                             <hr>
-                            <div class="search-option dropdown-item"><i class="fas fa-random" data-category-code="6"></i>所有题库</div>
+                            <div class="search-option dropdown-item"><i class="fas fa-random"
+                                                                        data-category-code="6"></i>所有题库
+                            </div>
                         </div>
                     </li>
                     <li class="nav-item ml-3 ">
@@ -77,7 +91,7 @@
                                 class="h5  mr-1 fas fa-search-plus"></i></div>
                     </li>
                 </ul>
-                <div id="login-links" >
+                <div id="login-links">
                     <ul class="nav navbar-nav ml-auto">
                         <li class="nav-item">
                             <a class="nav-link" href="../login.html#1" target="_top">登录</a>
@@ -177,7 +191,7 @@
                         <input type="radio" name="options" autocomplete="off" checked="checked">
                         <i class="fas fa-home "></i>我的首页
                     </label>
-                    <label class="personal-center-nav btn btn-outline-primary  rounded pb-2 pt-2 mb-1">
+                    <label class="personal-center-nav btn btn-outline-primary  rounded pb-2 pt-2 mb-1 active">
                         <input type="radio" name="options" autocomplete="off">
                         <i class="fab fa-codiepie"></i>去刷题~
                     </label>
@@ -193,7 +207,7 @@
                         <input type="radio" name="options" autocomplete="off">
                         <i class="fas fa-location-arrow"></i>发帖&讨论
                     </label>
-                    <label class="personal-center-nav btn btn-outline-primary  rounded pb-2 pt-2 mb-1 active"
+                    <label class="personal-center-nav btn btn-outline-primary  rounded pb-2 pt-2 mb-1 "
                            data-target-href="./add-question.html">
                         <input type="radio" name="options" autocomplete="off">
                         <i class="fas fa-plus-square "></i>添加题目
@@ -222,14 +236,17 @@
                 <div class="row">
                     <!--选择题型-->
                     <div class="col-12 ">
-                        <div class="text-left pl-2 font-weight-bold h5 pt-3"><i class="h3 fab fa-autoprefixer"></i> 请选择题型
+                        <div class="text-left pl-2 font-weight-bold h5 pt-3"><i class="h3 fab fa-autoprefixer"></i>
+                            请选择题型
                         </div>
                         <hr>
                     </div>
-                    <div class="col-12 pl-4" >
+                    <div class="col-12 pl-4">
                         <div class="row">
                             <div class="col-12 pt-2">
-                                <h6 class=" font-weight-bold" >请选择题目所属分类：<small class="text-muted">不勾选则不限题型</small></h6>
+                                <h6 class=" font-weight-bold">请选择题目所属分类：
+                                    <small class="text-muted">不勾选则不限题型</small>
+                                </h6>
                             </div>
                             <div class=" col-12 pt-2 d-flex">
                                 <div class="pl-4 form-group  mb-2 pt-2">
@@ -275,7 +292,9 @@
                                 </div>
                             </div>
                             <div class="col-12 pt-2">
-                                <h6 class=" font-weight-bold" >题目来源：<small class="text-muted">默认不限题目来源</small></h6>
+                                <h6 class=" font-weight-bold">题目来源：
+                                    <small class="text-muted">默认不限题目来源</small>
+                                </h6>
                             </div>
                             <div class=" col-12 pt-2 d-flex">
                                 <div class="pl-4 form-group  mb-2 pt-2">
@@ -294,9 +313,30 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-12 ml-2">
+                                <input type="hidden" id="titleNum" value="0">
+                                <label>请选择题目数量 ：</label>
+                                <div class="pl-4 pt-2" id="question-type">
+                                    <input type="radio" id="radio-single" name="iCheck"
+                                           class="mr-3 iCheck-question-num" checked value="5">
+                                    <label for="radio-single" class="">5</label>
+                                    <input type="radio" id="radio-multi" name="iCheck" class="mr-3 iCheck-question-num"
+                                           value="10">
+                                    <label for="radio-multi" class="">10</label>
+                                    <input type="radio" id="radio-gap_fill" name="iCheck"
+                                           class="mr-3 iCheck-question-num" value="15">
+                                    <label for="radio-gap_fill" class="">15</label>
+                                    <input type="radio" id="radio-ask" name="iCheck" class="mr-3 iCheck-question-num"
+                                           value="20">
+                                    <label for="radio-ask">20</label>
+                                    <input type="radio" id="radio-code" name="iCheck" class="mr-3 iCheck-question-num"
+                                           value="30">
+                                    <label for="radio-code">30</label>
+                                </div>
+                            </div>
                             <div class="col-12 w-100 pb-3 text-center ">
                                 <hr>
-                                <button class="mr-auto w-75 btn-outline-primary btn " onclick="">
+                                <button class="mr-auto w-75 btn-outline-primary btn " onclick="startPractice()">
                                     <i class="far fa-save"></i>Let 's Go !
                                 </button>
                             </div>
@@ -315,11 +355,48 @@
 </body>
 <script>
 
+
     var categories = new Array();
     var onlyFalse = false;
     var onlyNew = false;
+    var titleNum = 5;
+
+    function startPractice() {
+        const params = new URLSearchParams();
+        params.append("categories", categories);
+        params.append("titleNum", titleNum);
+        params.append("onlyNew", onlyNew);
+        params.append("onlyError", onlyFalse);
+        instance.post("/examPaper/generate", params).then(function (response) {
+            console.log(response.data.desc);
+            if (response.data.code == 0) {
+                store.set(EXAM_PAPER_ID, response.data.data.id);
+                window.location.href = CONTEXT+"page/exam/exam.html";
+            } else {
+                simpleErrorInfo(response.data.desc);
+                if (response.data.code == RESPONSE_CODE.NO_LOGIN) {
+                    setTimeout(function () {
+                        window.location.href = "../login.html";
+                    }, MIDDLE_DELAY);
+                }
+            }
+        }).catch(function (error) {
+            console.log(error);
+        });
+    }
+
 
     $(function () {
+
+        $(".iCheck-question-num").on("ifChecked", function () {
+            titleNum = $(this).val();
+            console.log(titleNum);
+        });
+        $('.iCheck-question-num').iCheck({
+            checkboxClass: 'icheckbox_square',
+            radioClass: 'iradio_square',
+            increaseArea: '20%' // optional
+        })
 
         var currentUser = store.get(CURRENT_USER);
         try {
@@ -335,32 +412,32 @@
             }, LONG_DELAY);
         }
 
-        $(".iCheck-choice").on("ifChecked",function () {
+        $(".iCheck-choice").on("ifChecked", function () {
             var choice = this.id.split("-")[1];
             categories.push(choice);
             console.log("add choice is " + choice);
         });
-        $(".iCheck-choice").on("ifUnchecked",function () {
+        $(".iCheck-choice").on("ifUnchecked", function () {
             var choice = this.id.split("-")[1];
             categories = remove(categories, choice);
             console.log("remove choice is " + choice);
         });
 
-        $(".iCheck-preference").on("ifChecked",function () {
+        $(".iCheck-preference").on("ifChecked", function () {
             var val = $(this).val();
-            if(val == 0) {
+            if (val == 0) {
                 onlyFalse = true;
-            }else {
-                onlyNew =true;
+            } else {
+                onlyNew = true;
             }
 
         });
-        $(".iCheck-preference").on("ifUnchecked",function () {
+        $(".iCheck-preference").on("ifUnchecked", function () {
             var val = $(this).val();
-            if(val == 0) {
+            if (val == 0) {
                 onlyFalse = false;
-            }else {
-                onlyNew =false;
+            } else {
+                onlyNew = false;
             }
         });
 
@@ -376,7 +453,6 @@
             radioClass: 'iradio_square',
             increaseArea: '20%' // optional
         })
-
 
 
     });

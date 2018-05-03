@@ -8,6 +8,19 @@ const CONTEXT = "http://localhost:63342/examination-system-fe/";
 const CURRENT_USER = "currentUser_exam";
 const USER_NAME = "userName_exam";
 const PASSWORD = "password_exam";
+// 试卷编号
+const EXAM_PAPER_ID = "paper_id_exam";
+// 题目数量
+const EXAM_PAPER_TITLE_NUM = "title_num_exam";
+// 试卷题目
+const EXAM_PAPER_QUESIONS = "questions_exam";
+// 试卷时长
+const EXAM_PAPER_DURATION = "duration_exam";
+// 考试记录id
+const EXAM_RECORD_ID = "record_id_exam";
+// title
+const EXAM_TITLE = "title_exam";
+
 const MICRO_DELAY = 100;
 const SHORT_DELAY = 500;
 const MIDDLE_DELAY = 700;

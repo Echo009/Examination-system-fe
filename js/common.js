@@ -191,6 +191,10 @@ if ("undefined" != typeof Vue) {
 
         return value.split(";");
     })
+    Vue.filter('seqFilter', function (value) {
+
+        return value-0+1;
+    })
     Vue.filter('answerFilter', function (value) {
         console.log(value);
         try {
@@ -210,4 +214,29 @@ if ("undefined" != typeof Vue) {
         }
         return $.trim(value);
     })
+}
+
+function handle(question) {
+
+    question.titleImgs = question.titleImgs.split(';');
+    question.answerImgs = question.answerImgs.split(';');
+    return question;
+
+}
+
+function hasImgTitle(question) {
+    if (question.titleImgs.length!=0) {
+        return true;
+    }
+    return false;
+}
+function hasImgAnswer(question) {
+    if (question.answerImgs.length!=0) {
+        return true;
+    }
+    return false;
+}
+
+function isGapFilling(question) {
+   return question.type == 2;
 }
