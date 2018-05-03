@@ -21,6 +21,8 @@ const EXAM_RECORD_ID = "record_id_exam";
 // title
 const EXAM_TITLE = "title_exam";
 
+const EXAM_ANSWER = "ANSWER_EXAM";
+
 const MICRO_DELAY = 100;
 const SHORT_DELAY = 500;
 const MIDDLE_DELAY = 700;

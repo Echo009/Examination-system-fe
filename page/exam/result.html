@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--
+* Author : Ech0
+* Email  : ech0.extreme@foxmail.com
+* Time   : 05/01/2018 04:28 PM
+*-->
+    <meta charset="UTF-8">
+    <title>Examing ... </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--lib-->
+    <script src="../../lib/jquery/jquery.js"></script>
+    <link rel="stylesheet" href="../../lib/bootstrap/bootstrap.css">
+    <script src="../../lib/bootstrap/popper.js"></script>
+    <script src="../../lib/bootstrap/bootstrap.js"></script>
+    <script src="../../lib/echarts/echarts.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css"
+          integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+    <!--sweetalert-->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.bootcss.com/store.js/1.3.20/store.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.18.0/axios.js"></script>
+    <!--icheck-->
+    <script src="https://cdn.bootcss.com/iCheck/1.0.2/icheck.js"></script>
+    <link href="https://cdn.bootcss.com/iCheck/1.0.2/skins/all.css" rel="stylesheet">
+    <!--file-input-->
+    <link rel="stylesheet" href="../../lib/fileinput/fileinput.css">
+    <link rel="stylesheet" href="../../lib/fileinput/theme.css">
+    <script src="../../lib/fileinput/piexif.js"></script>
+    <script src="../../lib/fileinput/fileinput.js"></script>
+    <script src="../../lib/fileinput/zh.js"></script>
+    <script src="../../lib/fileinput/theme.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+
+
+    <script src="../../js/constant.js"></script>
+    <script src="../../js/common.js"></script>
+
+    <!--todo modify-->
+    <link rel="stylesheet" href="../../css/custom.css">
+</head>
+<body>
+<canvas id="Mycanvas" style="z-index: -999;position: absolute"></canvas>
+<div class="container">
+    <div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary ">
+        <div class="container">
+            <a href="../index.html" class="navbar-brand">EETU-Exam</a>
+            <!--菜单按钮-->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                    aria-controls="" navbarResponsive aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!--菜单-->
+            <div class="collapse navbar-collapse text-center" id="navbarResponsive">
+                <ul class="navbar-nav mr-auto">
+                    <!--分类下拉框-->
+                    <li class="nav-item dropdown ">
+                        <div class="nav-link dropdown-toggle btn btn-primary" data-toggle="dropdown"><span
+                                id="searchOption" class="pl-2" data-category-code="6">所有题库</span> <span
+                                class="caret"></span></div>
+                        <div class="dropdown-menu ">
+                            <!--fixed category -->
+                            <div class="search-option dropdown-item" data-category-code="0"><i
+                                    class="fas fa-terminal"></i>编程语言
+                            </div>
+                            <div class="search-option dropdown-item" data-category-code="1"><i
+                                    class="fas fa-chart-bar"></i></i>算法
+                            </div>
+                            <div class="search-option dropdown-item" data-category-code="2"><i
+                                    class="fab fa-stumbleupon-circle"></i>数据结构
+                            </div>
+                            <div class="search-option dropdown-item" data-category-code="3"><i
+                                    class="fab fa-app-store"></i>数学和逻辑
+                            </div>
+
+                            <div class="search-option dropdown-item" data-category-code="4"><i
+                                    class="fab fa-connectdevelop"></i>计算机基础
+                            </div>
+                            <div class="search-option dropdown-item" data-category-code="5"><i class="fas fa-code"></i>软件开发
+                            </div>
+                            <hr>
+                            <div class="search-option dropdown-item"><i class="fas fa-random"
+                                                                        data-category-code="6"></i>所有题库
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item ml-3 ">
+                        <!--搜索框-->
+                        <form class="form-inline mt-2 mt-md-0 ">
+                            <input id="search-keyword" class="form-control mr-sm-2" type="text" placeholder="">
+                        </form>
+                    </li>
+                    <li class="nav-item ml-3 ">
+                        <div id="search-btn" class="search-btn btn btn-secondary btn-block  my-2 my-sm-0"><i
+                                class="h5  mr-1 fas fa-search-plus"></i></div>
+                    </li>
+                </ul>
+                <div id="login-links">
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="../login.html#1" target="_top">登录</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../login.html#2" target="_top">注册</a>
+                        </li>
+                    </ul>
+                </div>
+                <!--已经登录-->
+                <div id="personal-links" class="d-none ">
+                    <div class="nav navbar-nav mr-auto ">
+                        <div class="nav-item mr-3">
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-primary">
+                                    <img id="nav-head-img" class="rounded-circle"
+                                         src="http://p7vng16qv.bkt.clouddn.com/04035c2b-5c7b-49dc-8b2e-8f818f78ae29"
+                                         style="max-width: 2rem">
+                                </button>
+                                <button type="button" class="btn btn-primary"
+                                        onclick="window.location.href=CONTEXT+'page/personal/index.html'">
+                                    个人中心
+                                </button>
+                                <div class="btn-group" role="group">
+                                    <button id="btnGroupDrop2" type="button" class="btn btn-success dropdown-toggle"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop2">
+                                        <a class="dropdown-item" href="#"><i class="fas fa-heart"></i>题目收藏</a>
+                                        <a class="dropdown-item" href="#"><i class="fas fa-book"></i>刷题记录</a>
+                                        <a class="dropdown-item" href="#"><i class="fas fa-terminal"></i>我的简历</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="nav-item ">
+                            <div class="nav-link btn " onclick="logout()">退出
+                                <i class=" pl-2 h5 fas fa-sign-out-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content mt-3 ">
+        <div class="row">
+            <!--todo -->
+            <div class="w-100 ">
+                <div class="progress mt-4">
+                    <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated"
+                         role="progressbar"
+                         aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+                </div>
+            </div>
+            <!--题目-->
+            <div id="question-container" class="row  mt-5  pt-3 pb-5 border rounded w-100">
+                <h5 id="response" class="font-weight-bold"></h5>
+            </div>
+
+        </div>
+    </div>
+    <div class="mt-5 mb-3 text-muted text-center">
+        <hr>
+        &copy; 2018 <span class="h5 text-danger font-weight-bold">EETU</span> Examination System &nbsp;
+        <div>Power by <a class="text-success" href="http://echo0.cn "> eetn.echo0.cn </a></div>
+    </div>
+</div>
+</body>
+<script>
+
+</script>
+<script src="../../js/animation.js"></script>
+<script src="../../js/exam.js"></script>
+<script>
+    var examAnswer = store.get(EXAM_ANSWER);
+     store.remove(EXAM_ANSWER);
+
+
+
+    $(function () {
+        if("undefined" == typeof examAnswer){
+            simpleErrorInfo("请提交答案再查看判卷结果！");
+            window.location.href = CONTEXT + "page/exam/exam.html";
+        }
+        examAnswer.answers.forEach(function (t) {
+            t.answer = JSON.stringify(t.answer);
+        });
+        const params = new URLSearchParams();
+        params.append("examPaperId", examAnswer.examPaperId);
+        params.append("examRecordId", examAnswer.examRecordId);
+        params.append("answers", JSON.stringify(examAnswer.answers));
+
+        instance.post("/exam/grade", params).then(function (response) {
+            console.log(response.data.data);
+            if (response.data.code == 0) {
+                simpleSuccessInfo("判卷成功 ！");
+                $("#response").text(JSON.stringify(response.data.data));
+
+            } else {
+                simpleErrorInfo(response.data.desc);
+                if (response.data.code == RESPONSE_CODE.NO_LOGIN) {
+                    setTimeout(function () {
+                        window.location.href = "../login.html";
+                    }, MIDDLE_DELAY);
+                }
+            }
+        }).catch(function (error) {
+            console.log(error);
+        });
+
+    })
+</script>
+</html>

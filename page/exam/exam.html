@@ -148,7 +148,8 @@
             <!--todo -->
             <div class="w-100 ">
                 <div class="progress mt-4">
-                    <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                    <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated"
+                         role="progressbar"
                          aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
                 </div>
             </div>
@@ -156,9 +157,10 @@
             <div id="question-container" class="row  mt-5  pt-3 pb-5 border rounded w-100">
                 <!--title-->
                 <div class="col-10 offset-1  d-flex vcenter">
-                    <span class="badge badge-pill badge-warning">{{ question.seq | seqFilter  }}</span>
+                    <input id="type" type="hidden" :value="question.type">
+                    <span id="seq" class="badge badge-pill badge-danger">{{ question.seq | seqFilter  }}</span>
                     <span class=" badge badge-dark ">{{ question.type | typeFilter }}</span>
-                    <data class="d-none">{{ question.id }}</data>
+                    <data id="question-id" class="d-none">{{ question.id }}</data>
                     <h5 class="font-weight-bold text-secondary d-inline-block mt-4">{{ question.title }}
                     </h5>
                 </div>
@@ -167,34 +169,48 @@
                     <img :src="img" class="img-thumbnail d-block">
                 </div>
                 <!--options-->
-                <div class="col-12 col-md-8 offset-md-2 text-left pt-2">
+                <div class="col-12 col-md-10 offset-md-2 text-left pt-2">
                     <div v-for="(value, key) in question.choices"
                          class="btn-group-vertical btn-group-toggle pt-2 pb-2  w-75 " data-toggle="buttons">
-                        <label class="text-left btn btn-outline-primary rounded  border-0 pb-2    ">
-                            <input type="checkbox" name="options" autocomplete="off" checked="checked">
-                            <span class="badge badge-pill badge-info mr-5 text-uppercase">{{ key }}</span></i>{{ value
-                            }}
+                        <label :data-type="question.type" :id="key.toLowerCase()"
+                               class="option text-left btn btn-outline-primary rounded  border-0 pb-2"
+                               onclick="handleChoice(this)">
+                            <input type="checkbox" name="options" autocomplete="off">
+                            <span class="choice-option badge badge-pill badge-info mr-5 text-uppercase">
+                                {{ key }}</span>{{ value }}
                         </label>
                     </div>
                 </div>
+                <!--填空题-->
                 <div v-if="isGapFilling" class="col-10 offset-1 pt-4">
                     <hr>
                     请输入填空题答案
                     <small>（多个空之间以逗号分隔）</small>
                 </div>
                 <div v-if="isGapFilling" class="col-10 offset-1 pt-4">
-                    <input id="gap_filling_answer" type="text" class="form-control w-100">
+                    <input id="gap_filling_answer" type="text" class="p-3 form-control w-100">
+                </div>
+                <!--问答题或者编程题-->
+                <div v-if="isAsk" class="col-10 offset-1 pt-4">
+                    <hr>
+                    请输入问答题答案
+                    <small>（请使用英文标点符号）</small>
+                </div>
+                <div v-if="isAsk" class="col-10 offset-1 pt-4">
+                    <textarea id="ask_answer" class="form-control w-100  h4 p-4" style="min-height: 16rem"></textarea>
                 </div>
             </div>
             <!--题目索引-->
 
-            <div id="questions-seq" class="col-12 d-flex pt-4 ml-5 ">
-                <span class="btn btn-dark mr-3">题号：</span>
+            <div id="questions-seq" class="col-12  pt-4 ml-5 ">
+                <span class="btn btn-dark mr-3 disabled">题号：</span>
                 <span v-for="seq in seqs " class="question-index mr-3 btn btn-outline-dark ">{{ seq + 1 }}</span>
 
             </div>
             <div class="w-100">
+                <hr>
                 <span class="btn-success btn float-right mr-3" onclick="saveAnswer()">保存</span>
+                <span class="btn-danger btn float-right mr-3" onclick="submitAnswer()">交卷</span>
             </div>
         </div>
     </div>
@@ -209,12 +225,74 @@
 
 </script>
 <script src="../../js/animation.js"></script>
+<script src="../../js/exam.js"></script>
 <script>
 
+    /**
+     * 试卷答案
+     * @type {ExamAnswer}
+     */
+    var examAnswer = new ExamAnswer();
+    examAnswer.answers = new Array();
+    /**
+     * 选择题答案
+     * @type {Array}
+     */
+    var choiceAnswer = new Array();
+
+    /**
+     * 保证单选效果
+     * @param ele
+     */
+    function handleChoice(ele) {
+        var $ele = $(ele);
+        var type = $ele.attr("data-type");
+        if (type == 0) {
+            $(".option").removeClass("active");
+            setTimeout(function () {
+                $ele.addClass("active");
+            }, MICRO_DELAY)
+        }
+    }
+
     function saveAnswer() {
+        var answer = new AnswerItem();
+        answer.seq = $("#seq").text() - 1;
+        answer.questionId = $("#question-id").text();
+        var type = $("#type").val();
+        console.log("current type is " + type);
+
+        switch (type-0) {
+            // 填空
+            case 2 :
+                answer.answer = $("#gap_filling_answer").val().trim().split(",");
+                break;
+            // 问答
+            case 3 :
+                answer.answer = $("#ask_answer").val().trim();
+                break;
+            // 编程
+            case 4 :
+                answer.answer = $("#ask_answer").val().trim();
+                break;
+            // 选择题
+            default :
+                $(".option").each(function (index, ele) {
+                    if ($(ele).hasClass("active")) {
+                        console.log(ele);
+                        choiceAnswer.push($(ele).children("span").text().trim())
+                    }
+                })
+                answer.answer = choiceAnswer;
+                choiceAnswer = new Array();
+
+        }
+        examAnswer.answers[answer.seq] = answer;
+        console.log(examAnswer);
+        console.log(answer);
         simpleSuccessInfo("保存成功！");
     }
-    // 获取试卷信息,开始考试
+
     var v_data = new Vue({
         el: '#question-container',
         data: {
@@ -222,11 +300,23 @@
             hasTitleImg: false,
             hasAnswerImg: false,
             isGapFilling: false,
+            isAsk: false
         }
-    })
+    });
+
+    function submitAnswer() {
+        // store
+        store.set(EXAM_ANSWER,examAnswer);
+        window.location.href = CONTEXT + "page/exam/result.html";
+    }
+
     $(function () {
 
         $(document).on("click", ".question-index", function () {
+//            clear
+            $(".option").removeClass("active");
+            $("#gap_filling_answer").val("");
+            $("#ask_answer").val("");
             var $this = $(this);
             $(".question-index").removeClass("active");
             $this.addClass("active");
@@ -236,10 +326,46 @@
             v_data.hasTitleImg = hasImgTitle(v_data.question);
             v_data.hasAnswerImg = hasImgAnswer(v_data.question);
             v_data.isGapFilling = isGapFilling(v_data.question);
+            v_data.isAsk = isAsk(v_data.question);
             var sum = store.get(EXAM_PAPER_TITLE_NUM);
-            var rate = ($this.text()-0.0)/(sum) * 100;
-            rate = "" + rate.toString().substr(0, 3)+"%";
+            var rate = ($this.text() - 0.0) / (sum) * 100;
+            rate = "" + rate.toString().substr(0, 3) + "%";
             $("#progress-bar").css("width", rate);
+
+//            show saved answer
+            var savedAnswer = examAnswer.answers[$this.text() - 1];
+            console.log(savedAnswer);
+
+            if("undefined" != typeof savedAnswer) {
+                setTimeout(function () {
+                    //选择
+                    try{
+                        savedAnswer.answer.forEach(function (t) {
+                            $("#" + t).addClass("active");
+                            console.log(t);
+                        });
+                    }catch (e){
+                        console.log(e);
+                    }
+                    //填空
+                    try{
+                        $("#gap_filling_answer").val(savedAnswer.answer.join(","));
+                    }catch (e){
+                        console.log(e);
+                    }
+                    //其他
+                    try{
+                        $("#ask_answer").val(savedAnswer.answer);
+                    }catch (e){
+                        console.log(e);
+                    }
+
+
+                }, MICRO_DELAY);
+
+            }
+
+            console.log();
         });
 
         var currentUser = store.get(CURRENT_USER);
@@ -268,7 +394,7 @@
 
     });
 
-
+    // 获取试卷信息,开始考试
     function startExam(data, seq) {
         var examPaperId = store.get(EXAM_PAPER_ID);
         if ("undefined" == typeof examPaperId) {
@@ -287,10 +413,17 @@
                 store.set(EXAM_PAPER_DURATION, response.data.data.maxExamDuration);
                 store.set(EXAM_PAPER_QUESIONS, response.data.data.questions);
                 store.set(EXAM_TITLE, response.data.data.title);
+                store.set(EXAM_RECORD_ID, response.data.data.examRecordId);
                 data.question = handle(store.get(EXAM_PAPER_QUESIONS)[0]);
                 data.hasTitleImg = hasImgTitle(data.question);
                 data.hasAnswerImg = hasImgAnswer(data.question);
                 data.isGapFilling = isGapFilling(data.question);
+                data.isAsk = isAsk(data.question);
+
+//                init
+                examAnswer.examPaperId = store.get(EXAM_PAPER_ID);
+                examAnswer.examRecordId = store.get(EXAM_RECORD_ID);
+
                 var seqs = new Array();
                 for (i = 0; i < store.get(EXAM_PAPER_TITLE_NUM); i++) {
                     seqs.push(i);
@@ -298,8 +431,6 @@
                 seq.seqs = seqs;
                 console.log(seqs)
                 console.log(seq)
-
-
             } else {
                 simpleErrorInfo(response.data.desc);
                 if (response.data.code == RESPONSE_CODE.NO_LOGIN) {

@@ -240,3 +240,6 @@ function hasImgAnswer(question) {
 function isGapFilling(question) {
    return question.type == 2;
 }
+function isAsk(question) {
+    return question.type == 3 || question.type == 4;
+}
