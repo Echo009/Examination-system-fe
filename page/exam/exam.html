@@ -204,12 +204,13 @@
 
             <div id="questions-seq" class="col-12  pt-4 ml-5 ">
                 <span class="btn btn-dark mr-3 disabled">题号：</span>
-                <span v-for="seq in seqs " class="question-index mr-3 btn btn-outline-dark ">{{ seq + 1 }}</span>
+                <span v-for="seq in seqs " :seq="seq"
+                      class="question-index mr-3 btn btn-outline-dark ">{{ seq + 1 }}</span>
 
             </div>
             <div class="w-100">
                 <hr>
-                <span class="btn-success btn float-right mr-3" onclick="saveAnswer()">保存</span>
+                <span class="btn-success btn float-right mr-3" onclick="saveAnswer()">下一题</span>
                 <span class="btn-danger btn float-right mr-3" onclick="submitAnswer()">交卷</span>
             </div>
         </div>
@@ -262,7 +263,7 @@
         var type = $("#type").val();
         console.log("current type is " + type);
 
-        switch (type-0) {
+        switch (type - 0) {
             // 填空
             case 2 :
                 answer.answer = $("#gap_filling_answer").val().trim().split(",");
@@ -291,6 +292,12 @@
         console.log(examAnswer);
         console.log(answer);
         simpleSuccessInfo("保存成功！");
+//        switch title
+        var seq = $("#seq").text() - 0 ;
+        console.log(seq);
+        $("[seq=" + seq+"]").click();
+
+
     }
 
     var v_data = new Vue({
@@ -306,7 +313,7 @@
 
     function submitAnswer() {
         // store
-        store.set(EXAM_ANSWER,examAnswer);
+        store.set(EXAM_ANSWER, examAnswer);
         window.location.href = CONTEXT + "page/exam/result.html";
     }
 
@@ -336,31 +343,29 @@
             var savedAnswer = examAnswer.answers[$this.text() - 1];
             console.log(savedAnswer);
 
-            if("undefined" != typeof savedAnswer) {
+            if ("undefined" != typeof savedAnswer) {
                 setTimeout(function () {
                     //选择
-                    try{
+                    try {
                         savedAnswer.answer.forEach(function (t) {
                             $("#" + t).addClass("active");
                             console.log(t);
                         });
-                    }catch (e){
+                    } catch (e) {
                         console.log(e);
                     }
                     //填空
-                    try{
+                    try {
                         $("#gap_filling_answer").val(savedAnswer.answer.join(","));
-                    }catch (e){
+                    } catch (e) {
                         console.log(e);
                     }
                     //其他
-                    try{
+                    try {
                         $("#ask_answer").val(savedAnswer.answer);
-                    }catch (e){
+                    } catch (e) {
                         console.log(e);
                     }
-
-
                 }, MICRO_DELAY);
 
             }
