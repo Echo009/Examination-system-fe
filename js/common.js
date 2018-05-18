@@ -86,7 +86,7 @@ $(function () {
 
     $(document).on("click", ".question", function () {
         var $this = $(this);
-        window.location.href=CONTEXT+"page/question-detail.html?questionId="+$this.children("data").text();
+        window.location.href = CONTEXT + "page/question-detail.html?questionId=" + $this.children("data").text();
 
     });
 
@@ -193,13 +193,13 @@ if ("undefined" != typeof Vue) {
     })
     Vue.filter('seqFilter', function (value) {
 
-        return value-0+1;
+        return value - 0 + 1;
     })
     Vue.filter('answerFilter', function (value) {
         console.log(value);
         try {
             value = JSON.parse(value);
-        }catch (e){
+        } catch (e) {
 
         }
         console.log(value instanceof Array);
@@ -217,7 +217,10 @@ if ("undefined" != typeof Vue) {
 }
 
 function handle(question) {
-
+    question.titleImgs = question.titleImgs.substr(1);
+    question.answerImgs = question.answerImgs.substr(1);
+    console.log(question.titleImgs);
+    console.log(question.answerImgs);
     question.titleImgs = question.titleImgs.split(';');
     question.answerImgs = question.answerImgs.split(';');
     return question;
@@ -225,21 +228,23 @@ function handle(question) {
 }
 
 function hasImgTitle(question) {
-    if (question.titleImgs.length!=0) {
+    if (question.titleImgs.length != 0 && question.titleImgs[0].length != 0) {
         return true;
     }
     return false;
 }
+
 function hasImgAnswer(question) {
-    if (question.answerImgs.length!=0) {
+    if (question.answerImgs.length != 0 && question.answerImgs[0].length != 0) {
         return true;
     }
     return false;
 }
 
 function isGapFilling(question) {
-   return question.type == 2;
+    return question.type == 2;
 }
+
 function isAsk(question) {
     return question.type == 3 || question.type == 4;
 }
