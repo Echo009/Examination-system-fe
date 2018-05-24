@@ -143,7 +143,7 @@
             </div>
         </div>
     </div>
-    <div class="content mt-3 ">
+    <div id="result-container" class="content mt-3 ">
         <div class="row">
             <!--todo -->
             <div class="w-100 ">
@@ -157,7 +157,14 @@
             <div id="question-container" class="row  mt-5  pt-3 pb-5 border rounded w-100">
                 <h5 id="response" class="font-weight-bold"></h5>
             </div>
+            <div class="col-12 "><span class="btn-success btn">得分 :</span> <span class="font-weight-bold">{{grade}}</span> </div>
+            <div id="questions-seq" class="col-12  pt-4 ml-5 ">
+                <span class="btn btn-dark mr-3 disabled">题号：</span>
 
+                <span v-for="item in gradeResults " :seq="seq"
+                      class="question-index mr-3 btn btn-outline-dark ">{{ item.seq }}</span>
+
+            </div>
         </div>
     </div>
     <div class="mt-5 mb-3 text-muted text-center">
@@ -174,8 +181,16 @@
 <script src="../../js/exam.js"></script>
 <script>
     var examAnswer = store.get(EXAM_ANSWER);
-     store.remove(EXAM_ANSWER);
+    store.remove(EXAM_ANSWER);
 
+    var v_data = new Vue({
+        el: '#result-container',
+        data: {
+            gradeResults: "",
+            grade: "",
+            useTime: "",
+        }
+    });
 
 
     $(function () {
@@ -190,13 +205,28 @@
         params.append("examPaperId", examAnswer.examPaperId);
         params.append("examRecordId", examAnswer.examRecordId);
         params.append("answers", JSON.stringify(examAnswer.answers));
+//
+//       var data = {
+//            "examRecordId": 235,
+//            "grade": "40.00",
+//            "useTime": "00:00:15",
+//            "gradeResults": [{"seq": 0, "status": false}, {"seq": 1, "status": false}, {
+//                "seq": 2,
+//                "status": true
+//            }, {"seq": 3, "status": false}, {"seq": 4, "status": true}]
+//        }
+//        v_data.gradeResults = data.gradeResults;
+//        v_data.grade = data.grade;
+//        v_data.useTime = data.useTime;
 
         instance.post("/exam/grade", params).then(function (response) {
             console.log(response.data.data);
             if (response.data.code == 0) {
                 simpleSuccessInfo("判卷成功 ！");
                 $("#response").text(JSON.stringify(response.data.data));
-
+                v_data.gradeResults = response.data.data.gradeResults;
+                v_data.grade = response.data.data.grade;
+                v_data.useTime = response.data.data.useTime;
             } else {
                 simpleErrorInfo(response.data.desc);
                 if (response.data.code == RESPONSE_CODE.NO_LOGIN) {
